@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  celebrity_name: MyString
+  birth_year: MyString
+  death_year: MyString
+  profession: MyString
+  known_for: MyString
+
+two:
+  celebrity_name: MyString
+  birth_year: MyString
+  death_year: MyString
+  profession: MyString
+  known_for: MyString

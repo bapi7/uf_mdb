@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Celebrity name:</strong>
+  <%= @celebrity.celebrity_name %>
+</p>
+
+<p>
+  <strong>Birth year:</strong>
+  <%= @celebrity.birth_year %>
+</p>
+
+<p>
+  <strong>Death year:</strong>
+  <%= @celebrity.death_year %>
+</p>
+
+<p>
+  <strong>Profession:</strong>
+  <%= @celebrity.profession %>
+</p>
+
+<p>
+  <strong>Known for:</strong>
+  <%= @celebrity.known_for %>
+</p>
+
+<%= link_to 'Edit', edit_celebrity_path(@celebrity) %> |
+<%= link_to 'Back', celebrities_path %>

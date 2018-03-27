@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Primary title:</strong>
+  <%= @movie.primary_title %>
+</p>
+
+<p>
+  <strong>Original title:</strong>
+  <%= @movie.original_title %>
+</p>
+
+<p>
+  <strong>Start year:</strong>
+  <%= @movie.start_year %>
+</p>
+
+<p>
+  <strong>Run time minutes:</strong>
+  <%= @movie.run_time_minutes %>
+</p>
+
+<p>
+  <strong>Genres:</strong>
+  <%= @movie.genres %>
+</p>
+
+<%= link_to 'Edit', edit_movie_path(@movie) %> |
+<%= link_to 'Back', movies_path %>

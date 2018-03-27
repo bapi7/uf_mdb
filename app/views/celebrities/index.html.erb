@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Celebrities</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Celebrity name</th>
+      <th>Birth year</th>
+      <th>Death year</th>
+      <th>Profession</th>
+      <th>Known for</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @celebrities.each do |celebrity| %>
+      <tr>
+        <td><%= celebrity.celebrity_name %></td>
+        <td><%= celebrity.birth_year %></td>
+        <td><%= celebrity.death_year %></td>
+        <td><%= celebrity.profession %></td>
+        <td><%= celebrity.known_for %></td>
+        <td><%= link_to 'Show', celebrity %></td>
+        <td><%= link_to 'Edit', edit_celebrity_path(celebrity) %></td>
+        <td><%= link_to 'Destroy', celebrity, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Celebrity', new_celebrity_path %>
