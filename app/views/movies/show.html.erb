@@ -1,29 +1,274 @@
-<p id="notice"><%= notice %></p>
+<html lang="en">
 
-<p>
-  <strong>Primary title:</strong>
-  <%= @movie.primary_title %>
-</p>
+<head>
 
-<p>
-  <strong>Original title:</strong>
-  <%= @movie.original_title %>
-</p>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
 
-<p>
-  <strong>Start year:</strong>
-  <%= @movie.start_year %>
-</p>
+  <title><%= @movie.primary_title %> UFMDb </title>
 
-<p>
-  <strong>Run time minutes:</strong>
-  <%= @movie.run_time_minutes %>
-</p>
+</head>
 
-<p>
-  <strong>Genres:</strong>
-  <%= @movie.genres %>
-</p>
+<body>
 
-<%= link_to 'Edit', edit_movie_path(@movie) %> |
-<%= link_to 'Back', movies_path %>
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">UFMDb</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </div>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <form class="navbar-form form-inline" action="/action_page.php">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Search">
+        </div>
+        <button type="submit" class="btn btn-default">Search<i class="glyphicon glyphicon-search" font-size="14px"></i></button>
+      </form>
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="#">Watchlist</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Compare</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Top Movies</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#"><span class="glyphicon glyphicon-log-in"></span> LogIn</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Page Content -->
+<div class="container">
+
+  <!-- Portfolio Item Heading -->
+  <div class="row">
+    <div class="col-md-6">
+      <h1 class="my-4"> <%= @movie.primary_title %>
+        <small></small>
+      </h1>
+    </div>
+
+    <div class="col-md-4">
+      <div class="my-4">
+        <div class="ratingValue">
+          <strong title="<%=@rating.rating%> based on <%= number_with_delimiter(@rating.votes, :delimiter => ',') %> user ratings"><span itemprop="ratingValue"><%=@rating.rating%></span></strong><span class="grey">/</span><span class="grey" itemprop="bestRating">10</span>
+        </div>
+        <a><span class="small" itemprop="ratingCount"><%= number_with_delimiter(@rating.votes, :delimiter => ',') %></span></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Portfolio Item Row -->
+  <div class="row">
+
+    <div>
+      <%= image_tag(@movie.poster, :class => "img-fluid", :alt => "") %>
+    </div>
+
+    <div class="col-md-4">
+      <div class="rated">
+        <h4 class="inline">Rated:</h4>
+        <span>
+                <a><span><%= @movie.mpaa_rating %></span></a>
+        </span>
+      </div>
+
+      <div class="runtime">
+        <h4 class="inline">Runtime:</h4>
+        <span>
+                <a><span><%= @movie.run_time_minutes %> mins</span></a>
+            </span>
+      </div>
+
+      <div class="genres">
+        <h4 class="inline">Genres:</h4>
+        <span>
+                <a><span><%= @movie.genres %></span></a>
+            </span>
+      </div>
+
+      <div class="releasedate">
+        <h4 class="inline">Release Date:</h4>
+        <span>
+                <a><span> <%= @movie.start_year %> </span></a>
+            </span>
+      </div>
+
+      <div class="language">
+        <h4 class="inline">Language:</h4>
+        <span>
+          <% @movie.movie_language.split(%r{,\s*}).each do |lang| %>
+              <a><%= lang %></a>
+              <% if lang != @movie.movie_language.split(%r{,\s*}).last%>
+                  <span>|</span>
+              <%end %>
+          <% end %>
+        </span>
+      </div>
+
+      <div class="country">
+        <h4 class="inline">Country:</h4>
+        <span>
+          <% @movie.country.split(%r{,\s*}).each do |country| %>
+              <a><%= country %></a>
+              <% if country != @movie.country.split(%r{,\s*}).last%>
+                  <span>|</span>
+              <%end %>
+          <% end %>
+        </span>
+      </div>
+
+    </div>
+
+  </div>
+  <!-- /.row -->
+
+  <div class="article" id="titleCast">
+    <h2>Cast</h2>
+
+    <table class="cast_list">
+      <tbody>
+      <tr>
+        <td colspan="4" class="castlist_label">Actors:</td>
+      </tr>
+
+      <tr class="odd">
+        <td class="primary_photo">
+          <a href="/name/nm0000138/?ref_=tt_cl_i1"><img height="44" width="32" alt="Leonardo DiCaprio" title="Leonardo DiCaprio" src="https://ia.media-imdb.com/images/M/MV5BMjI0MTg3MzI0M15BMl5BanBnXkFtZTcwMzQyODU2Mw@@._V1_UY44_CR0,0,32,44_AL_.jpg" class="loadlate"></a>
+        </td>
+        <td class="itemprop" itemprop="actor" itemscope="" itemtype="http://schema.org/Person">
+          <a href="/name/nm0000138/?ref_=tt_cl_t1" itemprop="url"> <span class="itemprop" itemprop="name">Leonardo DiCaprio</span>
+          </a>
+        </td>
+      </tr>
+
+      <tr class="even">
+        <td class="primary_photo">
+          <a href="/name/nm0330687/?ref_=tt_cl_i2"><img height="44" width="32" alt="Joseph Gordon-Levitt" title="Joseph Gordon-Levitt" src="https://ia.media-imdb.com/images/M/MV5BMTQzOTg0NTkzNF5BMl5BanBnXkFtZTcwNTQ4MTcwOQ@@._V1_UY44_CR4,0,32,44_AL_.jpg" class="loadlate"></a>
+        </td>
+
+        <td class="itemprop" itemprop="actor" itemscope="" itemtype="http://schema.org/Person">
+          <a href="/name/nm0330687/?ref_=tt_cl_t2" itemprop="url"> <span class="itemprop" itemprop="name">Joseph Gordon-Levitt</span>
+          </a>
+        </td>
+        <td class="ellipsis">
+          ...
+        </td>
+        <td class="character">
+          <div>
+            <a href="/title/tt1375666/characters/nm0330687?ref_=tt_cl_t2">Arthur</a>
+          </div>
+        </td>
+      </tr>
+
+      <tr class="odd">
+        <td class="primary_photo">
+          <a href="/name/nm0680983/?ref_=tt_cl_i3"><img height="44" width="32" alt="Ellen Page" title="Ellen Page" src="https://ia.media-imdb.com/images/M/MV5BMTU3MzM3MDYzMV5BMl5BanBnXkFtZTcwNzk1Mzc3NA@@._V1_UX32_CR0,0,32,44_AL_.jpg" class="loadlate"></a>
+        </td>
+        <td class="itemprop" itemprop="actor" itemscope="" itemtype="http://schema.org/Person">
+          <a href="/name/nm0680983/?ref_=tt_cl_t3" itemprop="url"> <span class="itemprop" itemprop="name">Ellen Page</span>
+          </a>
+        </td>
+        <td class="ellipsis">
+          ...
+        </td>
+        <td class="character">
+          <div>
+            <a href="/title/tt1375666/characters/nm0680983?ref_=tt_cl_t3">Ariadne</a>
+          </div>
+        </td>
+      </tr>
+
+      <tr class="even">
+        <td class="primary_photo">
+          <a href="/name/nm0362766/?ref_=tt_cl_i4"><img height="44" width="32" alt="Tom Hardy" title="Tom Hardy" src="https://ia.media-imdb.com/images/M/MV5BMTQ3ODEyNjA4Nl5BMl5BanBnXkFtZTgwMTE4ODMyMjE@._V1_UX32_CR0,0,32,44_AL_.jpg" class="loadlate"></a>
+        </td>
+        <td class="itemprop" itemprop="actor" itemscope="" itemtype="http://schema.org/Person">
+          <a href="/name/nm0362766/?ref_=tt_cl_t4" itemprop="url"> <span class="itemprop" itemprop="name">Tom Hardy</span>
+          </a>                </td>
+        <td class="ellipsis">
+          ...
+        </td>
+        <td class="character">
+          <div>
+            <a href="/title/tt1375666/characters/nm0362766?ref_=tt_cl_t4">Eames</a>
+          </div>
+        </td>
+      </tr>
+      <tr class="odd">
+        <td class="primary_photo">
+          <a href="/name/nm0913822/?ref_=tt_cl_i5"><img height="44" width="32" alt="Ken Watanabe" title="Ken Watanabe" src="https://ia.media-imdb.com/images/M/MV5BMTQzMTUzNjc4Nl5BMl5BanBnXkFtZTcwMTUyODU2Mw@@._V1_UX32_CR0,0,32,44_AL_.jpg" class="loadlate"></a>
+        </td>
+        <td class="itemprop" itemprop="actor" itemscope="" itemtype="http://schema.org/Person">
+          <a href="/name/nm0913822/?ref_=tt_cl_t5" itemprop="url"> <span class="itemprop" itemprop="name">Ken Watanabe</span>
+          </a>                </td>
+        <td class="ellipsis">
+          ...
+        </td>
+        <td class="character">
+          <div>
+            <a href="/title/tt1375666/characters/nm0913822?ref_=tt_cl_t5">Saito</a>
+          </div>
+        </td>
+      </tr>
+
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Related Movies Row -->
+  <h3 class="my-4">Related Movies</h3>
+
+  <div class="row">
+
+    <div class="col-md-3 col-sm-6 mb-4">
+      <a href="#">
+        <img class="img-fluid" src="http://placehold.it/500x300" alt="">
+      </a>
+    </div>
+
+    <div class="col-md-3 col-sm-6 mb-4">
+      <a href="#">
+        <img class="img-fluid" src="http://placehold.it/500x300" alt="">
+      </a>
+    </div>
+
+    <div class="col-md-3 col-sm-6 mb-4">
+      <a href="#">
+        <img class="img-fluid" src="http://placehold.it/500x300" alt="">
+      </a>
+    </div>
+
+    <div class="col-md-3 col-sm-6 mb-4">
+      <a href="#">
+        <img class="img-fluid" src="http://placehold.it/500x300" alt="">
+      </a>
+    </div>
+
+  </div>
+  <!-- /.row -->
+
+</div>
+<!-- /.container -->
+
+<!-- Footer -->
+<footer class="py-5 bg-dark">
+  <div class="container">
+    <p class="m-0 text-center text-white">Copyright &copy; UFMDb 2018</p>
+  </div>
+  <!-- /.container -->
+</footer>
+
+</body>
+
+</html>

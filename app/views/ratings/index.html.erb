@@ -14,6 +14,7 @@
   <tbody>
     <% @ratings.each do |rating| %>
       <tr>
+        <td><%= rating.movie_id %></td>
         <td><%= rating.rating %></td>
         <td><%= rating.votes %></td>
         <td><%= link_to 'Show', rating %></td>

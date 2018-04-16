@@ -54,3 +54,8 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'activerecord-oracle_enhanced-adapter', '~> 1.7.0'
 gem 'ruby-oci8'
+
+gem 'bootstrap', '~> 4.0.0'
+gem 'autoprefixer-rails'
+
+gem 'jquery-ui-rails'
