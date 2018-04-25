@@ -10,14 +10,15 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-//= require fusioncharts/fusioncharts
-//= require fusioncharts/fusioncharts.charts
-//= require fusioncharts/themes/fusioncharts.theme.fint
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
 //= require popper
 //= require bootstrap-sprockets
 //= require bootstrap
+//= require fusioncharts/fusioncharts
+//= require fusioncharts/fusioncharts.charts
+//= require fusioncharts/themes/fusioncharts.theme.fint
+//= require fusioncharts/themes/fusioncharts.theme.ocean
 //= require_tree .
 

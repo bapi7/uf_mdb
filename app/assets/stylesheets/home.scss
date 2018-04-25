@@ -2,6 +2,7 @@
 // They will automatically be included in application.css.sass.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:600,300,100|Open+Sans+Condensed:300);
+
 @import url(https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css);
 body {
   background: #FFF linear-gradient(to bottom, #3F567C, #B5CCC6) no-repeat;
@@ -55,7 +56,7 @@ a:hover {
 }
 .window .top-bar .top-menu .search-box {
   background: #279CEB;
-  padding: 15px;
+  padding: 10px;
   position: relative;
 }
 .window .top-bar .top-menu .search-box input {
@@ -403,4 +404,26 @@ a:hover {
   .sidebar-is-open .window > .main {
     transform: translateX(250px);
   }
+}
+
+
+.panel-default {
+  border-color: transparent;
+}
+.panel-default>.panel-heading {
+  color: white;
+  background-color: transparent;
+  border-color: transparent;
+}
+.panel {
+  margin-bottom: 20px;
+  background-color: transparent;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  -webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.05);
+  box-shadow: 0 1px 1px rgba(0,0,0,0.05);
+}
+.panel-title>a {
+  color: inherit;
+  text-decoration: none;
 }

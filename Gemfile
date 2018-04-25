@@ -61,3 +61,4 @@ gem 'autoprefixer-rails'
 gem 'jquery-ui-rails'
 
 gem 'fusioncharts-rails'
+gem 'bcrypt', '3.1.11'

@@ -6,6 +6,12 @@ one:
   start_year: 1
   run_time_minutes: 1
   genres: MyString
+  mpaa_rating: MyString
+  plot: MyString
+  movie_language: MyString
+  country: MyString
+  awards: MyString
+  poster: MyString
 
 two:
   primary_title: MyString
@@ -13,3 +19,9 @@ two:
   start_year: 1
   run_time_minutes: 1
   genres: MyString
+  mpaa_rating: MyString
+  plot: MyString
+  movie_language: MyString
+  country: MyString
+  awards: MyString
+  poster: MyString

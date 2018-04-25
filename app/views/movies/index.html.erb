@@ -10,6 +10,12 @@
       <th>Start year</th>
       <th>Run time minutes</th>
       <th>Genres</th>
+      <th>Mpaa rating</th>
+      <th>Plot</th>
+      <th>Movie language</th>
+      <th>Country</th>
+      <th>Awards</th>
+      <th>Poster</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -22,6 +28,12 @@
         <td><%= movie.start_year %></td>
         <td><%= movie.run_time_minutes %></td>
         <td><%= movie.genres %></td>
+        <td><%= movie.mpaa_rating %></td>
+        <td><%= movie.plot %></td>
+        <td><%= movie.movie_language %></td>
+        <td><%= movie.country %></td>
+        <td><%= movie.awards %></td>
+        <td><%= movie.poster %></td>
         <td><%= link_to 'Show', movie %></td>
         <td><%= link_to 'Edit', edit_movie_path(movie) %></td>
         <td><%= link_to 'Destroy', movie, method: :delete, data: { confirm: 'Are you sure?' } %></td>
