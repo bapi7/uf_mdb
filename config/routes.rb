@@ -1,8 +1,8 @@
 Rails.application.routes.draw do
+  get 'sidebar_list/template'
   get 'sidebar_list/show'
   resources :reviews
   resources :users
-  resources :sidebar_list
   get 'sessions/new'
 
   get 'sidebar_list/displaySidebarList'
@@ -11,7 +11,8 @@ Rails.application.routes.draw do
   resources :celebrities
   resources :movies
   resources :web_user
-
+  match '/sidebar_list',      to: 'sidebar_list#temp',        via: 'post'
+  match '/sidebar_list',      to: 'sidebar_list#temp1',        via: 'post'
   get 'home/index'
 
   root 'home#index'

@@ -1,5 +1,5 @@
 class SidebarListController < ApplicationController
- before_action :set_movie, only: [:displaySidebarList]
+ before_action :set_movie, only: [:displaySidebarList,:template]
  before_action :display_movie_count_by_year, only: :index
   
   def displaySidebarList
@@ -23,6 +23,19 @@ class SidebarListController < ApplicationController
     :data => @mov
   }
 })
+  end
+
+  def temp
+    year = params[:year]
+    rating = params[:rating]
+    sort_by = params[:sort_by]
+    puts year + rating + sort_by
+    redirect_to :back
+  end
+
+  def temp1
+    @var = params[:q]
+    puts @var + "jammy1"
   end
 
   def set_movie
