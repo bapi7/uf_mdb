@@ -1,28 +1,28 @@
 class WebUsersController < ApplicationController
   before_action :set_web_user, only: [:show, :edit, :update, :destroy]
 
-  # GET /web_users
-  # GET /web_users.json
+  # GET /web_user
+  # GET /web_user.json
   def index
     @web_users = WebUser.all
   end
 
-  # GET /web_users/1
-  # GET /web_users/1.json
+  # GET /web_user/1
+  # GET /web_user/1.json
   def show
   end
 
-  # GET /web_users/new
+  # GET /web_user/new
   def new
     @web_user = WebUser.new
   end
 
-  # GET /web_users/1/edit
+  # GET /web_user/1/edit
   def edit
   end
 
-  # POST /web_users
-  # POST /web_users.json
+  # POST /web_user
+  # POST /web_user.json
   def create
     @web_user = WebUser.new(web_user_params)
 
@@ -37,8 +37,8 @@ class WebUsersController < ApplicationController
     end
   end
 
-  # PATCH/PUT /web_users/1
-  # PATCH/PUT /web_users/1.json
+  # PATCH/PUT /web_user/1
+  # PATCH/PUT /web_user/1.json
   def update
     respond_to do |format|
       if @web_user.update(web_user_params)
@@ -51,8 +51,8 @@ class WebUsersController < ApplicationController
     end
   end
 
-  # DELETE /web_users/1
-  # DELETE /web_users/1.json
+  # DELETE /web_user/1
+  # DELETE /web_user/1.json
   def destroy
     @web_user.destroy
     respond_to do |format|
