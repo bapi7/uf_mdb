@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'sidebar_list/show'
+
   get 'sidebar_list/displaySidebarList'
 
   resources :ratings
