@@ -312,4 +312,60 @@ where k.celebrity_id = l.celebrity_id and l.NoOfmovies > 50 and avg_rating >6 or
     @movie = @marr.paginate(:page => params[:page],:per_page => 20)
   end
 
+  def smpl2
+
+    
+    rating = params[:rating]
+    sort_by = params[:sort_by]
+
+    sql = "select t1.celebrity_name, count(*) as movie_count, avg(r1.rating) as celeb_rating
+    from
+    (select c.CELEBRITY_ID,c.CELEBRITY_NAME,count(r.rating)as NoOfmovies, avg(r.rating) as Avg_rating
+    from movies m, principal_cast p, ratings r, celebrities c
+    where m.movie_id = p.movie_id and m.movie_id = r.movie_id and p.CELEBRITY_ID = c.CELEBRITY_ID  
+    group by c.celebrity_name,c.CELEBRITY_ID) t1, principal_cast p1, movies m1, ratings r1
+    where t1.celebrity_id = p1.celebrity_id and p1.movie_id = m1.movie_id and m1.movie_id = r1.movie_id and t1.avg_rating >= "+rating.to_s+"
+    GROUP BY t1.celebrity_name
+ order by count(*) " + sort_by.to_s
+    @movie = ActiveRecord::Base.connection.exec_query(sql).to_a
+
+   
+    render :celeb_rating
+  end
+
+  def celeb_genre
+
+    
+    rating = params[:rating]
+    sort_by = params[:sort_by]
+
+      sql = "select t1.celebrity_name,m1.genres, count(*) as movie_count, avg(r1.rating) as average_rating
+    from
+(select c.CELEBRITY_ID,c.CELEBRITY_NAME,count(r.rating)as NoOfmovies, avg(r.rating) as Avg_rating
+from movies m, principal_cast p, ratings r, celebrities c
+where m.movie_id = p.movie_id and m.movie_id = r.movie_id and p.CELEBRITY_ID = c.CELEBRITY_ID  
+group by c.celebrity_name,c.CELEBRITY_ID) t1, principal_cast p1, movies m1, ratings r1
+where t1.celebrity_id = p1.celebrity_id and p1.movie_id = m1.movie_id and m1.movie_id = r1.movie_id and r1.rating >= "+rating.to_s+"
+GROUP BY t1.celebrity_name, m1.genres
+order by count(*) " + sort_by.to_s
+
+
+
+    sql1 = "select t1.celebrity_name,m1.genres, count(*) as movie_count, avg(r1.rating) as average_rating
+    from
+    (select c.CELEBRITY_ID,c.CELEBRITY_NAME,count(r.rating)as NoOfmovies, avg(r.rating) as Avg_rating
+    from movies m, principal_cast p, ratings r, celebrities c
+    where m.movie_id = p.movie_id and m.movie_id = r.movie_id and p.CELEBRITY_ID = c.CELEBRITY_ID  
+    group by c.celebrity_name,c.CELEBRITY_ID) t1, principal_cast p1, movies m1, ratings r1
+    where t1.celebrity_id = p1.celebrity_id and p1.movie_id = m1.movie_id and m1.movie_id = r1.movie_id and r1.rating >= "+rating.to_s+"
+    GROUP BY t1.celebrity_name, m1.genres
+    order by count(*) " + sort_by.to_s
+    @movie = ActiveRecord::Base.connection.exec_query(sql).to_a
+
+   
+    render :celeb_rating_genre
+  end
+
+
+
 end

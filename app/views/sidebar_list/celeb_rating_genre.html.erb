@@ -72,40 +72,38 @@
           </div>
         </div>
 
-          
-<%= form_tag({controller: "sidebar_list", action: "smpl2"}, id: 'sform', method: "post") do %>
-        <p>Rating : <%= text_field_tag(:rating) %></p>
-        <p> Sort By : <%= select_tag :sort_by, options_for_select(["ASC", "DESC"], "DESC") %> </p>
-        <p><%= submit_tag("Execute") %></p>
-      <% end %>
-
-      <div id="chart-container">
-        <% if !@piechart.nil? %><%= @piechart.render() %>
-        <% end %></div>
-
-      <table class="table table-striped">
-        <thead>
-        <tr>
-          <th>Celebrity Name</th>
-          <th>Movie Count</th>
-          <th>Rating</th>
-        </tr>
-        </thead>
-        <tbody>
-        <% if !@movie.nil? %>
-          <% @movie.each do |movies1| %>
-            <tr>
-    
-              <td> <%= movies1['celebrity_name'] %> </td>
-              <td> <%= movies1['movie_count'] %> </td>
-              <td> <%= movies1['celeb_rating'] %> </td>
-            </tr>
+          <%= form_tag({controller: "sidebar_list", action: "celeb_genre"}, id:'sform', method: "post") do %>
+            <p>Rating : <%= text_field_tag(:rating) %></p>
+            <p> Sort By : <%= select_tag :sort_by, options_for_select([ "ASC", "DESC" ], "DESC") %> </p>
+            <%= submit_tag("Execute") %>
           <% end %>
-        <% end %>
 
-        </tbody>
-      </table>
+        <div id="chart-container"> <% if !@piechart.nil? %><%= @piechart.render() %><% end %></div>
 
+        <table class="table table-striped" >
+            <thead>
+              <tr>
+                <th>Celebrity Name</th>
+                <th>Genre</th>
+               <th>Movie Count</th>   
+                <th>Average rating</th>
+              </tr>
+            </thead>
+            <tbody>
+            <% if !@movie.nil? %>
+              <% @movie.each do |movies1| %>
+              	<tr>
+                  
+                  <td> <%= movies1['celebrity_name'] %> </td>
+              		<td> <%= movies1['genres'] %> </td>
+               <td> <%= movies1['movie_count'] %> </td> 
+              		<td> <%= movies1['average_rating'] %> </td>
+                </tr>
+              <%end %>
+            <% end %>
+            </tbody>
+          </table>
+        
 
 
 

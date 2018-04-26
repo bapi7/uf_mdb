@@ -5,7 +5,11 @@ Rails.application.routes.draw do
   get 'sidebar_list/piechart'
   get 'sidebar_list/displaySidebarList'
   get 'sidebar_list/sample1'
+
   get 'sidebar_list/celebrity_prime_comp'
+  get 'sidebar_list/celeb_rating_genre'
+   get 'sidebar_list/celeb_rating'
+
 
 
   get 'sidebar_list/celeb_hits'
@@ -25,11 +29,11 @@ Rails.application.routes.draw do
 
   match '/sidebar_list/boxoffice_hits',      to: 'sidebar_list#box2',        via: 'post'
   match '/sidebar_list/sample1',      to: 'sidebar_list#smpl1',        via: 'post'
-
+  match '/sidebar_list/celeb_rating',      to: 'sidebar_list#smpl2',        via: 'post'
 
   match '/sidebar_list/celeb_hits',      to: 'sidebar_list#celeb_hts',        via: 'post'
   match '/sidebar_list/celebrity_prime_comp',      to: 'sidebar_list#smpl4',        via: 'post'
-
+  match '/sidebar_list/celeb_rating_genre',      to: 'sidebar_list#celeb_genre',        via: 'post'
 
   get 'home/index'
   root 'home#index'
