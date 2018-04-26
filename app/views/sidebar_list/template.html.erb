@@ -396,6 +396,8 @@
   .window .main .movie-list .load-more .fa {
     margin-left: 10px;
   }
+
+
   @media only screen and (max-width: 1220px) {
     .window > .sidebar {
       transform: translateX(-250px);
@@ -500,37 +502,41 @@
             <a href="#">Newest</a>
             <a href="#">Oldest</a>
           </div> <!-- right -->
-        </div> 
+        </div>
 
-               <%= form_tag({controller: "sidebar_list", action: "temp"}, method: "post") do %>
+
+
+               <%= form_tag({controller: "sidebar_list", action: "temp"}, id:'sform', method: "post") do %>
                 <p>Year :<%= text_field_tag(:year) %></p>
                 <p>Rating : <%= text_field_tag(:rating) %></p>
                 <p> Sort By : <%= select_tag :sort_by, options_for_select([ "ASC", "DESC" ], "DESC") %> </p>
                 <%= submit_tag("Execute") %>
               <% end %>
 
-          <table class="table table-striped" >
+        <div id="chart-container"> <% if !@piechart.nil? %><%= @piechart.render() %><% end %></div>
+
+        <table class="table table-striped" >
             <thead>
               <tr>
-                <th>Movie</th>
-                <th>Genre</th> 
+                <th>Poster</th>
+                <th>Title</th>
                 <th>Release Date</th>
                 <th>Rating</th>
               </tr>
             </thead>
             <tbody>
-            	
-              	<% @movie.each do |movies1| %>
-              		<tr>
-              			<td> <%= movies1['primary_title'] %> </td>
-              			<td> <%= movies1['genres'] %> </td>
-              			<td> <%= movies1['start_year'] %> </td>
-              			<td> 
-              				<img src=<%= movies1['poster'] %> alt="HTML5 Icon" style="width:128px;height:128px;">					
-              				 </td>
-              		</tr>
-              	<%end %>
-
+            <% if !@movie.nil? %>
+              <% @movie.each do |movies1| %>
+              	<tr>
+                  <td>
+                    <img src=<%= movies1['poster'] %> alt="HTML5 Icon" style="width:128px;height:128px;">
+                  </td>
+                  <td> <%= movies1['primary_title'] %> </td>
+              		<td> <%= movies1['start_year'] %> </td>
+              		<td> <%= movies1['rating'] %> </td>
+                </tr>
+              <%end %>
+            <% end %>
                 
             </tbody>
           </table>
@@ -551,6 +557,10 @@
 
       $('.trigger-sidebar-toggle').on('click', function() {
         $('body').toggleClass('sidebar-is-open');
+      });
+
+      $('#sform').on('submit', function () {
+          $(".table").show();
       });
 
     });
