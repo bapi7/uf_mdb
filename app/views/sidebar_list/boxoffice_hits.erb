@@ -532,7 +532,8 @@
                 <img src=<%= movies1['poster'] %> alt="HTML5 Icon" style="width:128px;height:128px;">
               </td>
               <td> <%= movies1['primary_title'] %> </td>
-             <td> <%= movies1['bo'] %> </td>
+              <td> <%= '$' << number_with_delimiter(movies1['bo'], :delimiter => ',') %> </td>
+              <!--  <td> <%= movies1['bo'] %> </td>--->
               <!--<td> <%= movies1['rating'] %> </td>-->
             </tr>
           <%end %>
