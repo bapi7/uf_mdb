@@ -173,7 +173,7 @@ group by m.START_YEAR order by m.START_YEAR"
   end
 
 
-  def smpl3
+  def celeb_hts
 
     nom = params[:nom]
     ave = params[:ave]
@@ -189,7 +189,7 @@ group by p.celebrity_id) k,
 from movies m, principal_cast p, ratings r, celebrities c
 where m.movie_id = p.movie_id and m.movie_id = r.movie_id and p.CELEBRITY_ID = c.CELEBRITY_ID
 group by c.celebrity_name,c.CELEBRITY_ID) l
-where k.celebrity_id = l.celebrity_id and l.NoOfmovies > 50 and avg_rating >6 order by k.hits DESC"
+where k.celebrity_id = l.celebrity_id and l.NoOfmovies > "+nom+" and avg_rating >"+ ave +" order by k.hits " + sort_by.to_s
    @movie = ActiveRecord::Base.connection.exec_query(sql).to_a
 
 
@@ -216,6 +216,51 @@ where k.celebrity_id = l.celebrity_id and l.NoOfmovies > 50 and avg_rating >6 or
                                         }
                                     })
  end
+
+
+  def smpl4
+
+    nom = params[:nom]
+    ave = params[:ave]
+    sort_by = params[:sort_by]
+    sql = "select celebrity_name, l.noofmovies as movie_count , k.hits, avg_rating
+from
+(select p.celebrity_id,count(*) as hits
+from movies m, principal_cast p,
+(select movie_id,cast(replace(substr(boxoffice,2),',','')as NUMERIC) as bo from boxoffice) b, (select avg(cast(replace(substr(boxoffice,2),',','')as NUMERIC)) as avg1 from boxoffice) b1
+where m.movie_id = b.movie_id and b.bo > b1.avg1 and p.movie_id = m.movie_id
+group by p.celebrity_id) k,
+(select c.CELEBRITY_ID,c.CELEBRITY_NAME,count(r.rating)as NoOfmovies, avg(r.rating) as Avg_rating
+from movies m, principal_cast p, ratings r, celebrities c
+where m.movie_id = p.movie_id and m.movie_id = r.movie_id and p.CELEBRITY_ID = c.CELEBRITY_ID
+group by c.celebrity_name,c.CELEBRITY_ID) l
+where k.celebrity_id = l.celebrity_id and l.NoOfmovies > 50 and avg_rating >6 order by k.hits DESC"
+    @movie = ActiveRecord::Base.connection.exec_query(sql).to_a
+
+
+
+    render :'sidebar_list/celebrity_prime_comp'
+  end
+
+  def barchart
+    @barchart = Fusioncharts::Chart.new({
+                                            :height => 400,
+                                            :width => 600,
+                                            :id => 'chart',
+                                            :type => 'column2d',
+                                            :renderAt => 'chart-container',
+                                            :dataSource => {
+                                                :chart => {
+                                                    :caption => 'Movie count by year',
+                                                    :subCaption => 'UFMDb',
+                                                    :xAxisname => 'Year',
+                                                    :yAxisName => 'Movie Count',
+                                                    :theme => 'ocean'
+                                                },
+                                                :data => mov
+                                            }
+                                        })
+  end
 
  def piechart
 

@@ -668,10 +668,10 @@
 
 
 
-      <%= form_tag({controller: "sidebar_list", action: "celeb_hts"}, id: 'sform', method: "post") do %>
+      <%= form_tag({controller: "sidebar_list", action: "smpl4"}, id: 'sform', method: "post") do %>
         <p>Number Of Movies Acted     :<%= text_field_tag(:nom) %></p>
         <p>Avg. Movie Rating of Actor     :<%= text_field_tag(:ave) %></p>
-        <p>Sort Hits By : <%= select_tag :sort_by, options_for_select(["ASC", "DESC"], "DESC") %> </p>
+        <p>Sort By : <%= select_tag :sort_by, options_for_select(["ASC", "DESC"], "DESC") %> </p>
         <p><%= submit_tag("Execute") %></p>
       <% end %>
 
