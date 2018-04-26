@@ -62,18 +62,34 @@ class MoviesController < ApplicationController
     end
   end
 
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_movie
-      sql = "select * from movies where movie_id = 'tt0027478'"
-      @movie = ActiveRecord::Base.connection.exec_query(sql).to_a
+  def set_movie
+    sql = "select * from movies where movie_id = '" << params[:id].to_s << "'"
+    @movie = ActiveRecord::Base.connection.exec_query(sql).to_a
 
-      #@movie = Movie.find(params[:id])
-      @rating = Rating.find(params[:id])
+    @movie = Movie.find(params[:id])
+    @rating = Rating.find(params[:id])
+
+    sql = "select * from celebrities natural join (select * from principal_cast where MOVIE_ID='" << params[:id] << "')"
+
+    @pc = ActiveRecord::Base.connection.exec_query(sql).to_a
+
+    genres = @movie.genres.split(',')
+
+    genstr = ""
+    genres.each do |gen|
+      genstr << " like '%"<< gen << " %'" << gen
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def movie_params
-      params.require(:movie).permit(:primary_title, :original_title, :start_year, :run_time_minutes, :genres)
-    end
+    lrat = @rating.rating-1
+    hrat = @rating.rating+1
+    sql = "select movie_id,primary_title, poster from movies natural join ratings where genres like '%" << @movie.genres.to_s << "%' and rating between '" << lrat.to_s << "' and '" << hrat.to_s << "' and movie_id<>'" << @movie.movie_id << "' order by rating desc"
+
+    @related = ActiveRecord::Base.connection.exec_query(sql).to_a.take(4)
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def movie_params
+    params.require(:movie).permit(:primary_title, :original_title, :start_year, :run_time_minutes, :genres)
+  end
+
 end

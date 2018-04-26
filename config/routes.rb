@@ -20,6 +20,9 @@ Rails.application.routes.draw do
   match '/sidebar_list/template',      to: 'sidebar_list#temp',        via: 'post'
   match '/sidebar_list',      to: 'sidebar_list#index',        via: 'get'
 
+  match '/sidebar_list/template',      to: 'sidebar_list#paginate',        via: 'get'
+  get 'home/index'
+
   match '/sidebar_list/boxoffice_hits',      to: 'sidebar_list#box2',        via: 'post'
   match '/sidebar_list/sample1',      to: 'sidebar_list#smpl1',        via: 'post'
 
