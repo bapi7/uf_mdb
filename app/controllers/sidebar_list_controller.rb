@@ -34,6 +34,99 @@ class SidebarListController < ApplicationController
 
   end
 
+
+  def box2
+
+    #year = params[:year]
+    #rating = params[:rating]
+    sort_by = params[:sort_by]
+
+    sql = "select poster,primary_title,bo
+        from movies m,
+                    (select movie_id,cast(replace(substr(boxoffice,2),',','')as NUMERIC) as bo from boxoffice) b, (select avg(cast(replace(substr(boxoffice,2),',','')as NUMERIC)) as avg1 from boxoffice) b1
+    where m.movie_id = b.movie_id and b.bo > b1.avg1
+    order by b.bo " + sort_by.to_s
+
+    @hits = ActiveRecord::Base.connection.exec_query(sql).to_a
+
+    #sql = "Select poster, primary_title, start_year, rating From movies m, ratings r Where m.movie_id = r.movie_id and r.rating >=" + rating.to_s + " and m.start_year = " + year.to_s + " order by r.rating " + sort_by.to_s
+    #@movie = ActiveRecord::Base.connection.exec_query(sql).to_a
+
+    sql ="select m.START_YEAR as label
+     from movies m,
+(select movie_id,cast(replace(substr(boxoffice,2),',','')as NUMERIC) as bo from boxoffice) b, (select avg(cast(replace(substr(boxoffice,2),',','')as NUMERIC)) as avg1 from boxoffice) b1
+where m.movie_id = b.movie_id and b.bo > b1.avg1
+group by m.START_YEAR order by m.START_YEAR"
+   @year_count = ActiveRecord::Base.connection.exec_query(sql).to_a
+
+    sql ="select count(*) as value
+     from movies m,
+(select movie_id,cast(replace(substr(boxoffice,2),',','')as NUMERIC) as bo from boxoffice) b, (select avg(cast(replace(substr(boxoffice,2),',','')as NUMERIC)) as avg1 from boxoffice) b1
+where m.movie_id = b.movie_id and b.bo > b1.avg1
+group by m.START_YEAR order by m.START_YEAR"
+    @year_count1 = ActiveRecord::Base.connection.exec_query(sql).to_a
+
+    @temp1 = @year_count
+    @temp2 = @year_count
+    mov = []
+
+    @year_count.each do |yc|
+      yc["label"] = yc["label"].to_s
+      mov << yc
+    end
+
+    puts mov.to_json
+
+
+    mov1=[]
+
+    @year_count1.each do |yc|
+      yc["value"] = yc["value"].to_s
+      mov1 << yc
+    end
+
+    puts mov1.to_json
+
+    @piechart = Fusioncharts::Chart.new({
+                                            :height => 400,
+                                            :width => 600,
+                                            :type => 'mscombi2d',
+                                            :renderAt => 'chart-container',
+                                            :dataSource => {
+                "chart" =>  {
+                "caption": "Actual Revenues, Targeted Revenues & Profits",
+                "subcaption": "Last year",
+                "xaxisname": "Month",
+                "yaxisname": "Amount (In USD)",
+                "numberprefix": "$",
+                "theme": "ocean"
+            },
+                "categories": [
+                    {
+                        :category => mov
+                    }
+                ],
+            "dataset": [
+                {
+                    "seriesname": "Projected Revenue",
+                    "renderas": "line",
+                    "showvalues": "0",
+                    :data => mov1
+                },
+                {
+                    "seriesname": "Projected Revenue",
+                    "renderas": "area",
+                    "showvalues": "0",
+                    :data => mov1
+                }
+
+              ]
+            }
+                                        });
+
+    render :'sidebar_list/boxoffice_hits'
+  end
+
   def temp
 
     year = params[:year]
@@ -133,7 +226,7 @@ class SidebarListController < ApplicationController
                                                },
                                                :data => @list
                                            }
-                                       })
+                                       });
 
  end
 
