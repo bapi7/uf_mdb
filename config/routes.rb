@@ -6,6 +6,8 @@ Rails.application.routes.draw do
   get 'sidebar_list/displaySidebarList'
   get 'sidebar_list/sample1'
 
+
+  get 'sidebar_list/celeb_hits'
   resources :reviews
   resources :users
   get 'sessions/new'
@@ -19,6 +21,9 @@ Rails.application.routes.draw do
 
   match '/sidebar_list/boxoffice_hits',      to: 'sidebar_list#box2',        via: 'post'
   match '/sidebar_list/sample1',      to: 'sidebar_list#smpl1',        via: 'post'
+
+
+  match '/sidebar_list/celeb_hits',      to: 'sidebar_list#smpl3',        via: 'post'
 
 
   get 'home/index'
