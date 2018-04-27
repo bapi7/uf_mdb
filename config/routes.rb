@@ -12,6 +12,9 @@ Rails.application.routes.draw do
    get 'sidebar_list/pop_production_critic'
    get 'sidebar_list/actor_age_hits'
    get 'sidebar_list/table_count'
+   get 'sidebar_list/runtime'
+  get 'sidebar_list/language'
+
 
    get 'sidebar_list/movie_table'
 

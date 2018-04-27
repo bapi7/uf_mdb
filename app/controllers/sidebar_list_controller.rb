@@ -592,6 +592,87 @@ group by mpaa_rating "
                                         })
   end
 
+
+
+  def runtime
+    sql = "select t.run_time as label , count(*) as value
+from
+(select case
+when run_time_minutes >= 30 and run_time_minutes <60 then '30-60'
+when run_time_minutes >= 60 and run_time_minutes <120 then '60-120'
+when run_time_minutes >= 120 and run_time_minutes <180 then '120-180'
+when run_time_minutes >= 180 and run_time_minutes <240 then '180-240'
+when run_time_minutes >= 240 and run_time_minutes <300 then '240-300'
+when run_time_minutes >= 300 and run_time_minutes <360 then '300-360'
+when run_time_minutes >= 360  then '>60'end as run_time
+ from movies) t
+ group by t.run_time
+ "
+    @year_count = ActiveRecord::Base.connection.exec_query(sql).to_a
+    mov = []
+    @year_count.each do |yc|
+      yc["label"] = yc["label"].to_s
+      yc["value"] = yc["value"].to_s
+      mov << yc
+    end
+
+    mov.to_json
+    @barchart = Fusioncharts::Chart.new({
+                                            :height => 400,
+                                            :width => 600,
+                                            :id => 'chart',
+                                            :type => 'column2d',
+                                            :renderAt => 'chart-container',
+                                            :dataSource => {
+                                                :chart => {
+                                                    :caption => 'Movie runtime stats',
+                                                    :subCaption => 'UFMDb',
+                                                    :xAxisname => 'Runtime range',
+                                                    :yAxisName => 'Movie Count',
+                                                    :theme => 'ocean'
+                                                },
+                                                :data => mov
+                                            }
+                                        })
+  end
+
+
+  def language
+    sql = "select t.label, t.value
+from
+(select movie_language as label, count(*) as value
+from movies
+group by movie_language
+order by count(*) desc) t
+where rownum <=10
+ "
+    @year_count = ActiveRecord::Base.connection.exec_query(sql).to_a
+    mov = []
+    @year_count.each do |yc|
+      yc["label"] = yc["label"].to_s
+      yc["value"] = yc["value"].to_s
+      mov << yc
+    end
+
+    mov.to_json
+    @barchart = Fusioncharts::Chart.new({
+                                            :height => 400,
+                                            :width => 600,
+                                            :id => 'chart',
+                                            :type => 'column2d',
+                                            :renderAt => 'chart-container',
+                                            :dataSource => {
+                                                :chart => {
+                                                    :caption => 'Movie runtime stats',
+                                                    :subCaption => 'UFMDb',
+                                                    :xAxisname => 'Runtime range',
+                                                    :yAxisName => 'Movie Count',
+                                                    :theme => 'ocean'
+                                                },
+                                                :data => mov
+                                            }
+                                        })
+  end
   
 
 end
