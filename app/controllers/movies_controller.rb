@@ -63,6 +63,27 @@ class MoviesController < ApplicationController
   end
 
   def set_movie
+
+    @cylinderChart = Fusioncharts::Chart.new({
+                                                 :height => 200,
+                                                 :width => 100,
+                                                 :type => 'cylinderChart',
+                                                 :renderAt => 'chart-container1',
+                                                 :dataSource => {
+                                                   :value => 44
+                                                 }
+                                             });
+
+    @angularChart = Fusioncharts::Chart.new({
+                                                :height => 200,
+                                                :width => 300,
+                                                :type => 'AngularGauge',
+                                                :renderAt => 'chart-container',
+                                                :dataSource => {
+                                                    :value => 92
+                                                }
+                                            });
+
     sql = "select * from movies where movie_id = '" << params[:id].to_s << "'"
     @movie = ActiveRecord::Base.connection.exec_query(sql).to_a
 
@@ -83,6 +104,8 @@ class MoviesController < ApplicationController
     lrat = @rating.rating-1
     hrat = @rating.rating+1
     sql = "select movie_id,primary_title, poster from movies natural join ratings where genres like '%" << @movie.genres.to_s << "%' and rating between '" << lrat.to_s << "' and '" << hrat.to_s << "' and movie_id<>'" << @movie.movie_id << "' order by rating desc"
+
+
 
     @related = ActiveRecord::Base.connection.exec_query(sql).to_a.take(4)
   end
