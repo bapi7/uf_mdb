@@ -219,18 +219,23 @@ where k.celebrity_id = l.celebrity_id and l.NoOfmovies > "+nom+" and avg_rating 
     nom = params[:nom]
     ave = params[:ave]
     sort_by = params[:sort_by]
-    sql = "select celebrity_name, l.noofmovies as movie_count , k.hits, avg_rating
+    sql = " select t1.celebrity_name
+from
+(select k.celebrity_id,celebrity_name, l.noofmovies,k.hits,l.birth_year, l.DEATH_YEAR, (l.birth_year+20) as start_year1, (l.birth_year+50) as end_year1
 from
 (select p.celebrity_id,count(*) as hits
 from movies m, principal_cast p,
 (select movie_id,cast(replace(substr(boxoffice,2),',','')as NUMERIC) as bo from boxoffice) b, (select avg(cast(replace(substr(boxoffice,2),',','')as NUMERIC)) as avg1 from boxoffice) b1
 where m.movie_id = b.movie_id and b.bo > b1.avg1 and p.movie_id = m.movie_id
 group by p.celebrity_id) k,
-(select c.CELEBRITY_ID,c.CELEBRITY_NAME,count(r.rating)as NoOfmovies, avg(r.rating) as Avg_rating
+(select c.CELEBRITY_ID,c.CELEBRITY_NAME,count(r.rating)as NoOfmovies, avg(r.rating) as Avg_rating,c.birth_year, c.DEATH_YEAR
 from movies m, principal_cast p, ratings r, celebrities c
-where m.movie_id = p.movie_id and m.movie_id = r.movie_id and p.CELEBRITY_ID = c.CELEBRITY_ID
-group by c.celebrity_name,c.CELEBRITY_ID) l
-where k.celebrity_id = l.celebrity_id and l.NoOfmovies > 50 and avg_rating >6 order by k.hits DESC"
+where m.movie_id = p.movie_id and m.movie_id = r.movie_id and p.CELEBRITY_ID = c.CELEBRITY_ID and c.birth_year !='\\N'
+group by c.celebrity_name,c.CELEBRITY_ID, c.birth_year, c.DEATH_YEAR) l
+where k.celebrity_id = l.celebrity_id) t1
+where t1.start_year1 >= (select (birth_year+20)
+from celebrities where celebrities.CELEBRITY_NAME='Richard Attenborough') and t1.end_year1 <= (select (birth_year+50) 
+from celebrities where celebrities.CELEBRITY_NAME='Richard Attenborough')"
     @movie = ActiveRecord::Base.connection.exec_query(sql).to_a
 
 
@@ -341,22 +346,89 @@ GROUP BY t1.celebrity_name, m1.genres
 order by count(*) " + sort_by.to_s
 
 
-
-    sql1 = "select t1.celebrity_name,m1.genres, count(*) as movie_count, avg(r1.rating) as average_rating
-    from
-    (select c.CELEBRITY_ID,c.CELEBRITY_NAME,count(r.rating)as NoOfmovies, avg(r.rating) as Avg_rating
-    from movies m, principal_cast p, ratings r, celebrities c
-    where m.movie_id = p.movie_id and m.movie_id = r.movie_id and p.CELEBRITY_ID = c.CELEBRITY_ID  
-    group by c.celebrity_name,c.CELEBRITY_ID) t1, principal_cast p1, movies m1, ratings r1
-    where t1.celebrity_id = p1.celebrity_id and p1.movie_id = m1.movie_id and m1.movie_id = r1.movie_id and r1.rating >= "+rating.to_s+"
-    GROUP BY t1.celebrity_name, m1.genres
-    order by count(*) " + sort_by.to_s
     @movie = ActiveRecord::Base.connection.exec_query(sql).to_a
 
    
     render :celeb_rating_genre
   end
 
+   def pop_prod1
 
+    
+    rating = params[:rating]
+    sort_by = params[:sort_by]
+
+      sql = "select b.production, avg(r.votes) as votes1
+from
+movies m, boxoffice b, ratings r
+where m.movie_id = b.movie_id and m.movie_id = r.movie_id
+group by b.production
+order by avg(r.votes) " + sort_by.to_s
+
+
+    @movie = ActiveRecord::Base.connection.exec_query(sql).to_a
+
+   
+    render :pop_production_votes
+  end
+
+def pop_prod2
+
+    
+    rating = params[:rating]
+    sort_by = params[:sort_by]
+
+      sql = "select b.production, avg(r.rating) as rating1
+from
+movies m, boxoffice b, ratings r
+where m.movie_id = b.movie_id and m.movie_id = r.movie_id
+group by b.production
+order by avg(r.rating) " + sort_by.to_s
+
+
+    @movie = ActiveRecord::Base.connection.exec_query(sql).to_a
+
+   
+    render :pop_production_critic
+  end
+
+  def actor_age
+
+    
+    rating = params[:rating]
+    sort_by = params[:sort_by]
+
+      sql = "select t1.celebrity_name, t1.noofmovies,t1.hits,t2.age
+  from
+  (select l.celebrity_id,celebrity_name, l.noofmovies,k.hits, avg_rating
+  from
+  (select p.celebrity_id,count(*) as hits
+  from movies m, principal_cast p,
+  (select movie_id,cast(replace(substr(boxoffice,2),',','')as NUMERIC) as bo from boxoffice) b, (select avg(cast(replace(substr(boxoffice,2),',','')as NUMERIC)) as avg1 from boxoffice) b1
+  where m.movie_id = b.movie_id and b.bo > b1.avg1 and p.movie_id = m.movie_id
+  group by p.celebrity_id) k,
+  (select c.CELEBRITY_ID,c.CELEBRITY_NAME,count(r.rating)as NoOfmovies, avg(r.rating) as Avg_rating
+  from movies m, principal_cast p, ratings r, celebrities c
+  where m.movie_id = p.movie_id and m.movie_id = r.movie_id and p.CELEBRITY_ID = c.CELEBRITY_ID  
+  group by c.celebrity_name,c.CELEBRITY_ID) l
+  where k.celebrity_id = l.celebrity_id) t1,
+  (select  t.celebrity_id, t.CELEBRITY_NAME,t.age
+from
+(select case
+when death_year ='\\N' and birth_year = '\\N' then 0
+when death_year ='\\N'  then 2018-birth_year
+when birth_year = '\\N' then 55
+when death_year !='\\N' and birth_year != '\\N' then(death_year - birth_year) 
+end as age, c.CELEBRITY_NAME,c.BIRTH_YEAR,c.DEATH_YEAR, c.CELEBRITY_ID
+from celebrities c ) t) t2
+where t1.celebrity_id = t2.celebrity_id and t2.age > 0
+order by age  " + sort_by.to_s
+
+
+    @movie = ActiveRecord::Base.connection.exec_query(sql).to_a
+
+   
+    render :actor_age_hits
+  end
 
 end

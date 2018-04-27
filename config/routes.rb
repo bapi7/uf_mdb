@@ -9,7 +9,9 @@ Rails.application.routes.draw do
   get 'sidebar_list/celebrity_prime_comp'
   get 'sidebar_list/celeb_rating_genre'
    get 'sidebar_list/celeb_rating'
-
+   get 'sidebar_list/pop_production_votes'
+   get 'sidebar_list/pop_production_critic'
+   get 'sidebar_list/actor_age_hits'
 
 
   get 'sidebar_list/celeb_hits'
@@ -34,6 +36,10 @@ Rails.application.routes.draw do
   match '/sidebar_list/celeb_hits',      to: 'sidebar_list#celeb_hts',        via: 'post'
   match '/sidebar_list/celebrity_prime_comp',      to: 'sidebar_list#smpl4',        via: 'post'
   match '/sidebar_list/celeb_rating_genre',      to: 'sidebar_list#celeb_genre',        via: 'post'
+  match '/sidebar_list/pop_production_votes',      to: 'sidebar_list#pop_prod1',        via: 'post'
+  match '/sidebar_list/pop_production_critic',      to: 'sidebar_list#pop_prod2',        via: 'post'
+  match '/sidebar_list/actor_age_hits',      to: 'sidebar_list#actor_age',        via: 'post'
+
 
   get 'home/index'
   root 'home#index'
