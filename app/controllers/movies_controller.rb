@@ -64,26 +64,6 @@ class MoviesController < ApplicationController
 
   def set_movie
 
-    @cylinderChart = Fusioncharts::Chart.new({
-                                                 :height => 200,
-                                                 :width => 100,
-                                                 :type => 'cylinderChart',
-                                                 :renderAt => 'chart-container1',
-                                                 :dataSource => {
-                                                   :value => 44
-                                                 }
-                                             });
-
-    @angularChart = Fusioncharts::Chart.new({
-                                                :height => 200,
-                                                :width => 300,
-                                                :type => 'AngularGauge',
-                                                :renderAt => 'chart-container',
-                                                :dataSource => {
-                                                    :value => 92
-                                                }
-                                            });
-
     sql = "select * from movies where movie_id = '" << params[:id].to_s << "'"
     @movie = ActiveRecord::Base.connection.exec_query(sql).to_a
 
