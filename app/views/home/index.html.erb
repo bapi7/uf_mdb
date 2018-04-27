@@ -12,7 +12,6 @@
 </head>
 
 <body>
-<div class="window-margin">
   <div class="window">
 
     <aside class="sidebar">
@@ -27,9 +26,15 @@
         <div class="separator"></div>
 
         <ul class="no-bullets">
-          <li><a href="/sidebar_list/template">Top Movies</a></li>
-          <li><a href="/sidebar_list/boxoffice_hits">Box Office hits</a></li>
-          <li><a href="/sidebar_list/celeb_hits">Celebrity hits</a></li>
+          <li><a href="/sidebar_list/top_movies?year=2018&rating=1&sort_by=DESC">Top Movies</a></li>
+          <li><a href="/sidebar_list/boxoffice_hits?sort_by=DESC">Box Office hits</a></li>
+          <li><a href="/sidebar_list/celeb_hits?nom=20&ave=7&sort_by=DESC">Celebrity hits</a></li>
+          <li><a href="/sidebar_list/actor_age_hits?rating=6&sort_by=DESC">Top Celebrity movies</a></li>
+          <li><a href="/sidebar_list/celeb_rating?rating=6&sort_by=DESC">Celebrity Ratings</a></li>
+          <li><a href="/sidebar_list/celeb_rating_genre?rating=6&sort_by=DESC">Celebrity Genre Ratings</a></li>
+          <li><a href="/sidebar_list/celebrity_prime_comp?nom=20&ave=7&sort_by=DESC">Prime comparison for Celebrity</a></li>
+          <li><a href="/sidebar_list/pop_production_critic?rating=6&sort_by=DESC">Popular Production Houses </a></li>
+          <li><a href="/sidebar_list/pop_production_votes?rating=6&sort_by=DESC">Top Production Houses</a></li>
           <li><a href="#">Movie Queries</a></li>
         </ul>
 
@@ -95,104 +100,18 @@
           <div class="left">
             <p class="bold">Latest Movies</p>
           </div> <!-- left -->
-          <div class="right">
-            <a class="blue" href="#">Rating <i class="fa fa-angle-down"></i></a>
-            <a href="#">Newest</a>
-            <a href="#">Oldest</a>
-          </div> <!-- right -->
         </div> <!-- title-bar -->
 
         <ul class="list">
-          <li>
-            <img src="https://res.cloudinary.com/dddcqqk0g/image/upload/v1394283878/2014-03-08_140412_oavbye.png" alt="" class="cover" />
-            <p class="title">Sin City: A Dame To Kill For</p>
-            <p class="genre">Action, Crime</p>
-          </li>
-          <li>
-            <img src="https://res.cloudinary.com/dddcqqk0g/image/upload/v1394283879/2014-03-08_140329_aawn02.png" alt="" class="cover" />
-            <p class="title">Transcendence</p>
-            <p class="genre">Action, Drama</p>
-          </li>
-          <li>
-            <img src="https://res.cloudinary.com/dddcqqk0g/image/upload/v1394283879/2014-03-08_140239_kyg9i7.png" alt="" class="cover" />
-            <p class="title">Need For Speed</p>
-            <p class="genre">Action, Crime</p>
-          </li>
-          <li>
-            <img src="https://res.cloudinary.com/dddcqqk0g/image/upload/v1394283879/2014-03-08_140052_dq4dyx.png" alt="" class="cover" />
-            <p class="title">The Amazing Spiderman</p>
-            <p class="genre">Action, Adventure</p>
-          </li>
-          <li>
-            <img src="https://res.cloudinary.com/dddcqqk0g/image/upload/v1394283879/2014-03-08_140104_tdgzka.png" alt="" class="cover" />
-            <p class="title">Pompeii</p>
-            <p class="genre">Action, Adventure</p>
-          </li>
-          <li>
-            <img src="https://res.cloudinary.com/dddcqqk0g/image/upload/v1394283880/2014-03-08_140248_fmufrz.png" alt="" class="cover" />
-            <p class="title">Divergent</p>
-            <p class="genre">Action, Sci-Fi</p>
-          </li>
-          <li>
-            <img src="https://res.cloudinary.com/dddcqqk0g/image/upload/v1394283880/2014-03-08_140401_aewzsy.png" alt="" class="cover" />
-            <p class="title">Guardians of the Galaxy</p>
-            <p class="genre">Action, Adventure</p>
-          </li>
-          <li>
-            <img src="https://res.cloudinary.com/dddcqqk0g/image/upload/v1394283880/2014-03-08_140339_wck2gw.png" alt="" class="cover" />
-            <p class="title">X-Men: Days of Fury</p>
-            <p class="genre">Action, Adventure</p>
-          </li>
-          <li>
-            <img src="https://res.cloudinary.com/dddcqqk0g/image/upload/v1394283880/2014-03-08_140311_rj1det.png" alt="" class="cover" />
-            <p class="title">Captain America: The Winter Soilder</p>
-            <p class="genre">Action, Adventure</p>
-          </li>
-          <li>
-            <img src="https://res.cloudinary.com/dddcqqk0g/image/upload/v1394283880/2014-03-08_140248_fmufrz.png" alt="" class="cover" />
-            <p class="title">Divergent</p>
-            <p class="genre">Action, Sci-Fi</p>
-          </li>
-          <li>
-            <img src="https://res.cloudinary.com/dddcqqk0g/image/upload/v1394283880/2014-03-08_140132_bcnfqk.png" alt="" class="cover" />
-            <p class="title">RoboCop (2014)</p>
-            <p class="genre">Action, Crime</p>
-          </li>
-          <li>
-            <img src="https://res.cloudinary.com/dddcqqk0g/image/upload/v1394283879/2014-03-08_140329_aawn02.png" alt="" class="cover" />
-            <p class="title">Transcendence</p>
-            <p class="genre">Action, Drama</p>
-          </li>
-          <li>
-            <img src="https://res.cloudinary.com/dddcqqk0g/image/upload/v1394283879/2014-03-08_140239_kyg9i7.png" alt="" class="cover" />
-            <p class="title">Need For Speed</p>
-            <p class="genre">Action, Crime</p>
-          </li>
-          <li>
-            <img src="https://res.cloudinary.com/dddcqqk0g/image/upload/v1394283879/2014-03-08_140157_wvifsp.png" alt="" class="cover" />
-            <p class="title">The Lego Movie</p>
-            <p class="genre">Adventure, Animation</p>
-          </li>
-          <li>
-            <img src="https://res.cloudinary.com/dddcqqk0g/image/upload/v1394283878/2014-03-08_140412_oavbye.png" alt="" class="cover" />
-            <p class="title">Sin City: A Dame To Kill For</p>
-            <p class="genre">Action, Crime</p>
-          </li>
-          <li>
-            <img src="https://res.cloudinary.com/dddcqqk0g/image/upload/v1394283880/2014-03-08_140339_wck2gw.png" alt="" class="cover" />
-            <p class="title">X-Men: Days of Fury</p>
-            <p class="genre">Action, Adventure</p>
-          </li>
-          <li>
-            <img src="https://res.cloudinary.com/dddcqqk0g/image/upload/v1394283879/2014-03-08_140052_dq4dyx.png" alt="" class="cover" />
-            <p class="title">The Amazing Spiderman</p>
-            <p class="genre">Action, Adventure</p>
-          </li>
-          <li>
-            <img src="https://res.cloudinary.com/dddcqqk0g/image/upload/v1394283880/2014-03-08_140248_fmufrz.png" alt="" class="cover" />
-            <p class="title">Divergent</p>
-            <p class="genre">Action, Sci-Fi</p>
-          </li>
+          <% @lmov.each do |latest| %>
+            <li>
+
+                <img class="img-fluid" src=<%= latest['poster'] %> alt="">
+
+              <a href="/movies/<%= latest['movie_id'] %>"><p class="title"><%= latest['primary_title'] %></p></a>
+              <p class="genre"><%= latest['genres'] %></p>
+            </li>
+          <% end %>
         </ul>
 
         <a href="#" class="load-more">Show more movies <span class="fa fa-plus"></span></a>
@@ -203,10 +122,6 @@
     </div> <!-- main -->
 
   </div> <!-- window -->
-</div> <!-- window margin -->
-<div>
-  <a href="https://www.google.com"> Test </a>
-</div>
 
 <script src='https://production-assets.codepen.io/assets/common/stopExecutionOnTimeout-b2a7b3fe212eaa732349046d8416e00a9dec26eb7fd347590fbced3ab38af52e.js'></script>
 <script >jQuery(document).ready(function($) {

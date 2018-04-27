@@ -1,41 +1,71 @@
 require 'will_paginate/array'
 class SidebarListController < ApplicationController
-  before_action :set_movie, only: [:template]
+  #before_action :set_movie, only: [:top_movies]
 
   def displaySidebarList
   end
 
   def index
-    sql = "select start_year as label, count(*) as value from movies where start_year > 2000 group by start_year order by start_year"
-    @year_count = ActiveRecord::Base.connection.exec_query(sql).to_a
-    mov = []
-    @year_count.each do |yc|
-      yc["label"] = yc["label"].to_s
-      yc["value"] = yc["value"].to_s
-      mov << yc
+    sql = "select case
+    when r.rating >= 0 and r.rating <1 then '0-1'
+    when r.rating >= 1 and r.rating <2 then '1-2'
+    when r.rating >= 2 and r.rating <3 then '2-3'
+    when r.rating >= 3 and r.rating <4 then '3-4'
+    when r.rating >= 4 and r.rating <5 then '4-5'
+    when r.rating >= 5 and r.rating <6 then '5-6'
+    when r.rating >= 6 and r.rating <7 then '6-7'
+    when r.rating >= 7 and r.rating <8 then '7-8'
+    when r.rating >= 8 and r.rating <9 then '8-9'
+    when r.rating >= 9 and r.rating <10 then '9-10'
+    end as rating_range, count(*) as val
+from (select rating from movies m, ratings r Where m.movie_id = r.movie_id and r.rating >= 1 and m.start_year = '2018' order by r.rating DESC ) r
+group by case
+    when r.rating >= 0 and r.rating <1 then '0-1'
+    when r.rating >= 1 and r.rating <2 then '1-2'
+    when r.rating >= 2 and r.rating <3 then '2-3'
+    when r.rating >= 3 and r.rating <4 then '3-4'
+    when r.rating >= 4 and r.rating <5 then '4-5'
+    when r.rating >= 5 and r.rating <6 then '5-6'
+    when r.rating >= 6 and r.rating <7 then '6-7'
+    when r.rating >= 7 and r.rating <8 then '7-8'
+    when r.rating >= 8 and r.rating <9 then '8-9'
+    when r.rating >= 9 and r.rating <10 then '9-10'
     end
+    order by rating_range"
+        @year_count = ActiveRecord::Base.connection.exec_query(sql).to_a
+        mov = []
+        @year_count.each do |yc|
+            yc["label"] = yc["label"].to_s
+            yc["value"] = yc["value"].to_s
+            mov << yc
+          end
 
-    @chart = Fusioncharts::Chart.new({
-                                         :height => 400,
-                                         :width => 600,
-                                         :id => 'chart',
-                                         :type => 'column2d',
-                                         :renderAt => 'chart-container',
-                                         :dataSource => {
-                                             :chart => {
-                                                 :caption => 'Movie count by year',
-                                                 :subCaption => 'UFMDb',
-                                                 :xAxisname => 'Year',
-                                                 :yAxisName => 'Movie Count',
-                                                 :theme => 'ocean'
-                                             },
-                                             :data => mov
-                                         }
-                                     })
-
+        @chart = Fusioncharts::Chart.new({
+                                             :height => 500,
+                                             :width => 600,
+                                             :id => 'chart',
+                                             :type => 'pie3d',
+                                             :renderAt => 'chart-container',
+                                             :dataSource => {
+                                                 :chart => {
+                                                     :caption => 'Movie count by year',
+                                                     :subCaption => 'UFMDb',
+                                                     :startingAngle => "120",
+                                                     :showLabels => "0",
+                                                     :showLegend => "1",
+                                                     :enableMultiSlicing => "0",
+                                                     :slicingDistance => "15",
+                                                     :showPercentValues => "1",
+                                                     :showPercentInTooltip => "0",
+                                                     :plotTooltext => "Rating range : $label Total Movie Count : $datavalue",
+                                                     :theme => 'ocean'
+                                                 },
+                                                 :data => mov
+                                             }
+                                         })
   end
 
-  def box2
+  def boxoffice_hits
 
     #year = params[:year]
     #rating = params[:rating]
@@ -47,8 +77,8 @@ class SidebarListController < ApplicationController
     where m.movie_id = b.movie_id and b.bo > b1.avg1
     order by b.bo " + sort_by.to_s
 
-    @hits = ActiveRecord::Base.connection.exec_query(sql).to_a
-
+    @movhit = ActiveRecord::Base.connection.exec_query(sql).to_a
+    @hits = @movhit.paginate(:page=> params[:page], :per_page=>15)
 
 
 
@@ -115,24 +145,44 @@ group by m.START_YEAR order by m.START_YEAR " + sort_by.to_s
             }
                                         });
 
-    render :'sidebar_list/boxoffice_hits'
   end
 
-  def paginate
-    @movie = @marr.paginate(:page => params[:page],:per_page => 20)
-  end
-
-  def temp
+  def top_movies
 
     year = params[:year]
     rating = params[:rating]
     sort_by = params[:sort_by]
 
-    sql = "Select poster, primary_title, start_year, rating From movies m, ratings r Where m.movie_id = r.movie_id and r.rating >=" + rating.to_s + " and m.start_year = " + year.to_s + " order by r.rating " + sort_by.to_s
+    sql = "Select poster, primary_title, start_year, rating From movies m, ratings r Where m.movie_id = r.movie_id and r.rating >= " + rating.to_s + " and m.start_year = " + year.to_s + " order by r.rating " + sort_by.to_s
     @marr = ActiveRecord::Base.connection.exec_query(sql).to_a
     @movie = @marr.paginate(:page=> params[:page], :per_page=>15)
 
-    sql = "select case when r.rating >= 0 and r.rating <1 then '0-1' when r.rating >= 1 and r.rating <2 then '1-2' when r.rating >= 2 and r.rating <3 then '2-3' when r.rating >= 3 and r.rating <4 then '3-4' when r.rating >= 4 and r.rating <5 then '4-5' when r.rating >= 5 and r.rating <6 then '5-6' when r.rating >= 6 and r.rating <7 then '6-7' when r.rating >= 7 and r.rating <8 then '7-8' when r.rating >= 8 and r.rating <9 then '8-9' when r.rating >= 9 and r.rating <10 then '9-10' end as label, count(*) as value from (select * from ratings order by rating asc) r group by case when r.rating >= 0 and r.rating <1 then '0-1' when r.rating >= 1 and r.rating <2 then '1-2' when r.rating >= 2 and r.rating <3 then '2-3' when r.rating >= 3 and r.rating <4 then '3-4' when r.rating >= 4 and r.rating <5 then '4-5' when r.rating >= 5 and r.rating <6 then '5-6' when r.rating >= 6 and r.rating <7 then '6-7' when r.rating >= 7 and r.rating <8 then '7-8' when r.rating >= 8 and r.rating <9 then '8-9' when r.rating >= 9 and r.rating <10 then '9-10' end order by label"
+    sql = "select case
+    when r.rating >= 0 and r.rating <1 then '0-1'
+    when r.rating >= 1 and r.rating <2 then '1-2'
+    when r.rating >= 2 and r.rating <3 then '2-3'
+    when r.rating >= 3 and r.rating <4 then '3-4'
+    when r.rating >= 4 and r.rating <5 then '4-5'
+    when r.rating >= 5 and r.rating <6 then '5-6'
+    when r.rating >= 6 and r.rating <7 then '6-7'
+    when r.rating >= 7 and r.rating <8 then '7-8'
+    when r.rating >= 8 and r.rating <9 then '8-9'
+    when r.rating >= 9 and r.rating <10 then '9-10'
+    end as rating_range, count(*) as val
+from (select rating from movies m, ratings r Where m.movie_id = r.movie_id and r.rating >= " + rating.to_s + " and m.start_year = " + year.to_s + " order by r.rating " + sort_by.to_s+") r
+    group by case
+             when r.rating >= 0 and r.rating <1 then '0-1'
+             when r.rating >= 1 and r.rating <2 then '1-2'
+             when r.rating >= 2 and r.rating <3 then '2-3'
+             when r.rating >= 3 and r.rating <4 then '3-4'
+             when r.rating >= 4 and r.rating <5 then '4-5'
+             when r.rating >= 5 and r.rating <6 then '5-6'
+             when r.rating >= 6 and r.rating <7 then '6-7'
+             when r.rating >= 7 and r.rating <8 then '7-8'
+             when r.rating >= 8 and r.rating <9 then '8-9'
+             when r.rating >= 9 and r.rating <10 then '9-10'
+             end
+    order by rating_range"
     @year_count = ActiveRecord::Base.connection.exec_query(sql).to_a
     mov = []
     @year_count.each do |yc|
@@ -165,11 +215,11 @@ group by m.START_YEAR order by m.START_YEAR " + sort_by.to_s
                                             }
                                         })
 
-    render :template
+    #render :top_movies
   end
 
 
-  def celeb_hts
+  def celeb_hits
 
     nom = params[:nom]
     ave = params[:ave]
@@ -186,35 +236,12 @@ from movies m, principal_cast p, ratings r, celebrities c
 where m.movie_id = p.movie_id and m.movie_id = r.movie_id and p.CELEBRITY_ID = c.CELEBRITY_ID
 group by c.celebrity_name,c.CELEBRITY_ID) l
 where k.celebrity_id = l.celebrity_id and l.NoOfmovies > "+nom+" and avg_rating >"+ ave +" order by k.hits " + sort_by.to_s
-   @movie = ActiveRecord::Base.connection.exec_query(sql).to_a
+   @movi = ActiveRecord::Base.connection.exec_query(sql).to_a
 
-
-
-    render :celeb_hits
+    @movie = @movi.paginate(:page=> params[:page], :per_page=>15)
   end
 
- def barchart
-   @barchart = Fusioncharts::Chart.new({
-                                        :height => 400,
-                                        :width => 600,
-                                        :id => 'chart',
-                                        :type => 'column2d',
-                                        :renderAt => 'chart-container',
-                                        :dataSource => {
-                                            :chart => {
-                                                :caption => 'Movie count by year',
-                                                :subCaption => 'UFMDb',
-                                                :xAxisname => 'Year',
-                                                :yAxisName => 'Movie Count',
-                                                :theme => 'ocean'
-                                            },
-                                            :data => mov
-                                        }
-                                    })
- end
-
-
-  def smpl4
+ def celebrity_prime_comp
 
     nom = params[:nom]
     ave = params[:ave]
@@ -236,11 +263,10 @@ where k.celebrity_id = l.celebrity_id) t1
 where t1.start_year1 >= (select (birth_year+20)
 from celebrities where celebrities.CELEBRITY_NAME='Richard Attenborough') and t1.end_year1 <= (select (birth_year+50) 
 from celebrities where celebrities.CELEBRITY_NAME='Richard Attenborough')"
-    @movie = ActiveRecord::Base.connection.exec_query(sql).to_a
+    @movi = ActiveRecord::Base.connection.exec_query(sql).to_a
 
+    @movie = @movi.paginate(:page=> params[:page], :per_page=>15)
 
-
-    render :'sidebar_list/celebrity_prime_comp'
   end
 
   def barchart
@@ -301,14 +327,7 @@ from celebrities where celebrities.CELEBRITY_NAME='Richard Attenborough')"
 
  end
 
-  def set_movie
-    sql = "Select poster, primary_title, start_year, rating From movies m, ratings r Where m.movie_id = r.movie_id order by r.rating DESC"
-    @marr = ActiveRecord::Base.connection.exec_query(sql).to_a
-    #@movie = @marr.paginate(:page=> 1, :per_page=>15)
-    @movie = @marr.paginate(:page => params[:page],:per_page => 20)
-  end
-
-  def smpl2
+  def celeb_rating
 
     
     rating = params[:rating]
@@ -323,13 +342,12 @@ from celebrities where celebrities.CELEBRITY_NAME='Richard Attenborough')"
     where t1.celebrity_id = p1.celebrity_id and p1.movie_id = m1.movie_id and m1.movie_id = r1.movie_id and t1.avg_rating >= "+rating.to_s+"
     GROUP BY t1.celebrity_name
  order by count(*) " + sort_by.to_s
-    @movie = ActiveRecord::Base.connection.exec_query(sql).to_a
+    @movi = ActiveRecord::Base.connection.exec_query(sql).to_a
 
-   
-    render :celeb_rating
+    @movie = @movi.paginate(:page=> params[:page], :per_page=>15)
   end
 
-  def celeb_genre
+  def celeb_rating_genre
 
     
     rating = params[:rating]
@@ -346,13 +364,13 @@ GROUP BY t1.celebrity_name, m1.genres
 order by count(*) " + sort_by.to_s
 
 
-    @movie = ActiveRecord::Base.connection.exec_query(sql).to_a
+    @movi = ActiveRecord::Base.connection.exec_query(sql).to_a
 
-   
-    render :celeb_rating_genre
+    @movie = @movi.paginate(:page=> params[:page], :per_page=>15)
+
   end
 
-   def pop_prod1
+   def pop_production_votes
 
     
     rating = params[:rating]
@@ -366,13 +384,13 @@ group by b.production
 order by avg(r.votes) " + sort_by.to_s
 
 
-    @movie = ActiveRecord::Base.connection.exec_query(sql).to_a
+    @movi = ActiveRecord::Base.connection.exec_query(sql).to_a
 
-   
-    render :pop_production_votes
+    @movie = @movi.paginate(:page=> params[:page], :per_page=>15)
+
   end
 
-def pop_prod2
+def pop_production_critic
 
     
     rating = params[:rating]
@@ -386,13 +404,12 @@ group by b.production
 order by avg(r.rating) " + sort_by.to_s
 
 
-    @movie = ActiveRecord::Base.connection.exec_query(sql).to_a
+    @movi = ActiveRecord::Base.connection.exec_query(sql).to_a
 
-   
-    render :pop_production_critic
+    @movie = @movi.paginate(:page=> params[:page], :per_page=>15)
   end
 
-  def actor_age
+  def actor_age_hits
 
     
     rating = params[:rating]
@@ -425,10 +442,9 @@ where t1.celebrity_id = t2.celebrity_id and t2.age > 0
 order by age  " + sort_by.to_s
 
 
-    @movie = ActiveRecord::Base.connection.exec_query(sql).to_a
+    @movi = ActiveRecord::Base.connection.exec_query(sql).to_a
 
-   
-    render :actor_age_hits
+    @movie = @movi.paginate(:page=> params[:page], :per_page=>15)
   end
 
 end
