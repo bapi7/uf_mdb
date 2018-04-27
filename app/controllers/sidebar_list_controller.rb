@@ -530,7 +530,7 @@ when birth_year = '\\N' then 55
 when death_year !='\\N' and birth_year != '\\N' then(death_year - birth_year) 
 end as age, c.CELEBRITY_NAME,c.BIRTH_YEAR,c.DEATH_YEAR, c.CELEBRITY_ID
 from celebrities c ) t) t2
-where t1.celebrity_id = t2.celebrity_id and t2.age > 0
+where t1.celebrity_id = t2.celebrity_id and t2.age > 0 and rownum <=1000
 order by age  " + sort_by.to_s
 
 
