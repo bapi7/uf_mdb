@@ -80,12 +80,13 @@
         </div>
 
           <%= form_tag({controller: "sidebar_list", action: "pop_production_votes"}, id:'sform', method: "get") do %>
-            
-            <p> Sort By : <%= select_tag :sort_by, options_for_select([ "ASC", "DESC" ], "DESC") %> </p>
+            <p>Rating >= :<%= text_field_tag(:rating) %></p>
+            <p>Votes >= :<%= text_field_tag(:votes) %></p>
+          <!--  <p> Sort Votes By : <%= select_tag :sort_by, options_for_select([ "ASC", "DESC" ], "DESC") %> </p> -->
             <%= submit_tag("Execute") %>
           <% end %>
 
-        <div id="chart-container"> <% if !@piechart.nil? %><%= @piechart.render() %><% end %></div>
+        <div id="chart-container"> <% if !@barchart.nil? %><%= @barchart.render() %><% end %></div>
 
         <table class="table table-striped" >
             <thead>
@@ -101,7 +102,7 @@
               	<tr>
                   
                   <td> <%= movies1['production'] %> </td>
-              		<td> <%= movies1['votes1'] %> </td>
+              		<td> <%= movies1['sum_votes'] %> </td>
               		
                 </tr>
               <%end %>

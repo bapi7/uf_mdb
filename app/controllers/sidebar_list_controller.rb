@@ -434,19 +434,50 @@ order by count(*) " + sort_by.to_s
 
    def pop_production_votes
 
-    
+    votes = params[:votes]
     rating = params[:rating]
     sort_by = params[:sort_by]
 
-      sql = "select b.production, avg(r.votes) as votes1
-from
-movies m, boxoffice b, ratings r
-where m.movie_id = b.movie_id and m.movie_id = r.movie_id
-group by b.production
-order by avg(r.votes) " + sort_by.to_s
 
+
+    sql ="select b.production, sum(r.VOTES) as sum_votes
+      from
+      movies m, boxoffice b, ratings r
+      where m.movie_id = b.movie_id and m.movie_id = r.movie_id and r.rating > "+rating +" and r.VOTES >="+ votes+"
+      group by b.production"
 
     @movi = ActiveRecord::Base.connection.exec_query(sql).to_a
+
+    test =[]
+    @movi.each do |data|
+      obj = {}
+      obj["label"] = data["production"]
+      obj["value"] = data["sum_votes"]
+      test << obj
+    end
+    test.to_json
+
+
+    @barchart = Fusioncharts::Chart.new({
+                                            :height => 400,
+                                            :width => 600,
+                                            :id => 'chart',
+                                            :type => 'column2d',
+                                            :renderAt => 'chart-container',
+                                            :dataSource => {
+                                                :chart => {
+                                                    :caption => 'Movie count by year',
+                                                    :subCaption => 'UFMDb',
+                                                    :xAxisname => 'Year',
+                                                    :yAxisName => 'Movie Count',
+                                                    :theme => 'ocean'
+                                                },
+                                                :data => test
+                                            }
+                                        })
+
+
+
 
     @movie = @movi.paginate(:page=> params[:page], :per_page=>15)
 
