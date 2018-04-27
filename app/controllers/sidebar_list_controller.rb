@@ -509,4 +509,19 @@ order by age  " + sort_by.to_s
     @movie = @movi.paginate(:page=> params[:page], :per_page=>15)
   end
 
+  def table_cnt
+
+
+      sql = "select  table_name, 
+   num_rows counter  from USER_TABLES  
+   where num_rows > 1 order by 
+   counter desc " 
+
+
+    @movie = ActiveRecord::Base.connection.exec_query(sql).to_a
+
+   
+    render :table_count
+  end
+
 end

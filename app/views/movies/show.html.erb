@@ -85,9 +85,11 @@
           <div class="col-md-4">
             <div class="my-4">
               <div class="ratingValue">
-                <strong title="<%= @rating.rating %> based on <%= number_with_delimiter(@rating.votes, :delimiter => ',') %> user ratings"><span itemprop="ratingValue"><%= @rating.rating %></span></strong><span class="grey">/</span><span class="grey" itemprop="bestRating">10</span>
+                <h4>
+                <strong title="<%= @rating.rating %> based on <%= number_with_delimiter(@rating.votes, :delimiter => ',') %> user ratings"><span>Rating: </span><span itemprop="ratingValue"><%= @rating.rating %></span></strong><span class="grey"> / </span><span class="grey" itemprop="bestRating">10</span>
+              </h4>
               </div>
-              <a><span class="small" itemprop="ratingCount"><%= number_with_delimiter(@rating.votes, :delimiter => ',') %></span></a>
+              <h5><span>by </span><span class="" itemprop="ratingCount"><%= number_with_delimiter(@rating.votes, :delimiter => ',') %></span><span> Users</span></h5>
             </div>
           </div>
         </div>
@@ -99,7 +101,7 @@
         <!-- Portfolio Item Row -->
         <div class="row">
 
-          <div>
+          <div class="col-md-6">
             <%= image_tag(@movie.poster, :class => "img-fluid", :alt => "") %>
           </div>
 
@@ -165,26 +167,32 @@
 
         <div class="article" id="titleCast">
           <h2>Cast</h2>
-
-          <table class="cast_list">
-            <tbody>
-            <% @pc.each do |cast| %>
-              <tr>
-                <td>
-                  <a> <span><%= cast['celebrity_name'] %></span></a>
-                </td>
-                <td>
-                  ...
-                </td>
-                <td>
-                  <div>
-                    <a><%= cast['movie_role'].capitalize %></a>
-                  </div>
-                </td>
-              </tr>
-            <% end %>
-            </tbody>
-          </table>
+            <div class="row">
+              <div class="col-md-6 ">
+              <table class="table table-bordered cast_list">
+                <thead>
+                  <tr>
+                    <th class="font-weight-bold" scope="col">Name</th>
+                    <th class="font-weight-bold" scope="col">Role</th>
+                  </tr>
+                </thead>
+                <tbody>
+                <% @pc.each do |cast| %>
+                  <tr>
+                    <td>
+                      <span><%= cast['celebrity_name'] %></span>
+                    </td>
+                    <td>
+                      <div>
+                        <%= cast['movie_role'].capitalize %>
+                      </div>
+                    </td>
+                  </tr>
+                <% end %>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
 
         <!-- Related Movies Row -->
@@ -220,6 +228,7 @@
 <script src='https://production-assets.codepen.io/assets/common/stopExecutionOnTimeout-b2a7b3fe212eaa732349046d8416e00a9dec26eb7fd347590fbced3ab38af52e.js'></script>
 <script >jQuery(document).ready(function($) {
 
+    $(this).scrollTop(0);
     $('.trigger-sidebar-toggle').on('click', function() {
         $('body').toggleClass('sidebar-is-open');
     });

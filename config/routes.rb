@@ -11,7 +11,7 @@ Rails.application.routes.draw do
    get 'sidebar_list/pop_production_votes'
    get 'sidebar_list/pop_production_critic'
    get 'sidebar_list/actor_age_hits'
-
+   get 'sidebar_list/table_count'
 
   get 'sidebar_list/celeb_hits'
   resources :reviews
@@ -22,8 +22,6 @@ Rails.application.routes.draw do
   resources :celebrities
   resources :movies
   resources :web_user
-
-  get 'home/index'
 
   get 'home/index'
   root 'home#index'
