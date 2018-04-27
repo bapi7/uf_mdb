@@ -74,7 +74,7 @@
 
       <div class="title-bar">
         <div class="left">
-          <h2>Top Movies</h2>
+          <h2>Hit Movies</h2>
         </div>
       </div>
 
@@ -103,7 +103,7 @@
               <td>
                 <img src=<%= movies1['poster'] %> alt="HTML5 Icon" style="width:128px;height:128px;">
               </td>
-              <td> <%= movies1['primary_title'] %> </td>
+              <td> <a href="/movies/<%= movies1['movie_id'] %>"><p class="title"><%= movies1['primary_title'] %></p></a> </td>
               <td> <%= '$' << number_with_delimiter(movies1['bo'], :delimiter => ',') %> </td>
               <!--  <td> <%= movies1['bo'] %> </td>--->
               <!--<td> <%= movies1['rating'] %> </td>-->

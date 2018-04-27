@@ -71,7 +71,7 @@ group by case
     #rating = params[:rating]
     sort_by = params[:sort_by]
 
-    sql = "select poster,primary_title,bo
+    sql = "select m.movie_id, poster,primary_title,bo
         from movies m,
                     (select movie_id,cast(replace(substr(boxoffice,2),',','')as NUMERIC) as bo from boxoffice) b, (select avg(cast(replace(substr(boxoffice,2),',','')as NUMERIC)) as avg1 from boxoffice) b1
     where m.movie_id = b.movie_id and b.bo > b1.avg1
@@ -115,11 +115,9 @@ group by m.START_YEAR order by m.START_YEAR " + sort_by.to_s
                                             :renderAt => 'chart-container',
                                             :dataSource => {
                 "chart" =>  {
-                "caption": "Actual Revenues, Targeted Revenues & Profits",
-                "subcaption": "Last year",
-                "xaxisname": "Month",
-                "yaxisname": "Amount (In USD)",
-                "numberprefix": "$",
+                "caption": "Number of Hit movies by Year",
+                "xaxisname": "Year",
+                "yaxisname": "Number of Hit Movies",
                 "theme": "ocean"
             },
                 "categories": [
@@ -129,13 +127,13 @@ group by m.START_YEAR order by m.START_YEAR " + sort_by.to_s
                 ],
             "dataset": [
                 {
-                    "seriesname": "Projected Revenue",
+                    "seriesname": "Number of Hit Movies",
                     "renderas": "line",
                     "showvalues": "0",
                     :data => mov1
                 },
                 {
-                    "seriesname": "Projected Revenue",
+                    "seriesname": "Number of Hit Movies",
                     "renderas": "area",
                     "showvalues": "0",
                     :data => mov1
@@ -238,6 +236,58 @@ where k.celebrity_id = l.celebrity_id and l.NoOfmovies > "+nom+" and avg_rating 
    @movi = ActiveRecord::Base.connection.exec_query(sql).to_a
 
     @movie = @movi.paginate(:page=> params[:page], :per_page=>15)
+
+    mov = []
+    @movie.each do |yc|
+      yc["label"] = yc["label"].to_s
+      mov << yc
+    end
+    mov.to_json
+
+
+    mov1=[]
+    @movie.each do |yc|
+      yc["value"] = yc["value"].to_s
+      mov1 << yc
+    end
+    mov1.to_json
+
+    @piechart = Fusioncharts::Chart.new({
+                                            :height => 400,
+                                            :width => 600,
+                                            :type => 'mscombi2d',
+                                            :renderAt => 'chart-container',
+                                            :dataSource => {
+                                                "chart" =>  {
+                                                    "caption": "Number of Hit movies by Year",
+                                                    "xaxisname": "Year",
+                                                    "yaxisname": "Number of Hit Movies",
+                                                    "theme": "ocean"
+                                                },
+                                                "categories": [
+                                                    {
+                                                        :category => mov
+                                                    }
+
+                                                ],
+                                                "dataset": [
+                                                    {
+                                                        "seriesname": "Number of Hit Movies",
+                                                        "renderas": "line",
+                                                        "showvalues": "0",
+                                                        :data => mov1
+                                                    },
+                                                    {
+                                                        "seriesname": "Number of Hit Movies",
+                                                        "renderas": "area",
+                                                        "showvalues": "0",
+                                                        :data => mov1
+                                                    }
+
+                                                ]
+                                            }
+                                        });
+
   end
 
  def celebrity_prime_comp
