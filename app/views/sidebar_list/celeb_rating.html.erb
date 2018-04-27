@@ -80,7 +80,7 @@
         </div>
 
           
-<%= form_tag({controller: "sidebar_list"}, id: 'sform', method: "get") do %>
+<%= form_tag({controller: "sidebar_list", action: "celeb_rating"}, id: 'sform', method: "get") do %>
         <p>Rating : <%= text_field_tag(:rating) %></p>
         <p> Sort By : <%= select_tag :sort_by, options_for_select(["ASC", "DESC"], "DESC") %> </p>
         <p><%= submit_tag("Execute") %></p>

@@ -215,7 +215,6 @@ from (select rating from movies m, ratings r Where m.movie_id = r.movie_id and r
                                             }
                                         })
 
-    #render :top_movies
   end
 
 

@@ -4,7 +4,6 @@ Rails.application.routes.draw do
   get 'sidebar_list/boxoffice_hits'
   get 'sidebar_list/piechart'
   get 'sidebar_list/displaySidebarList'
-  get 'sidebar_list/sample1'
 
   get 'sidebar_list/celebrity_prime_comp'
   get 'sidebar_list/celeb_rating_genre'
@@ -24,9 +23,6 @@ Rails.application.routes.draw do
   resources :movies
   resources :web_user
 
-  match '/sidebar_list',      to: 'sidebar_list#index',        via: 'get'
-
-  get '/sidebar_list/top_movies'
   get 'home/index'
 
   get 'home/index'

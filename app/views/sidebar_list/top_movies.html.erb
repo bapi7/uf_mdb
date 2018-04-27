@@ -79,7 +79,7 @@
           </div>
         </div>
 
-          <%= form_tag({controller: "sidebar_list"}, id:'sform', method: "get") do %>
+          <%= form_tag({controller: "sidebar_list", action: "top_movies"}, id:'sform', method: "get") do %>
             <p>Year :<%= text_field_tag(:year) %></p>
             <p>Rating : <%= text_field_tag(:rating) %></p>
             <p> Sort By : <%= select_tag :sort_by, options_for_select([ "ASC", "DESC" ], "DESC") %> </p>
@@ -102,7 +102,7 @@
               <% @movie.each do |movies1| %>
               	<tr>
                   <td>
-                    <img src=<%= movies1['poster'] %> alt="HTML5 Icon" style="width:128px;height:128px;">
+                    <img src=<%= movies1['poster'] %> alt="" style="width:128px;height:128px;">
                   </td>
                   <td> <%= movies1['primary_title'] %> </td>
               		<td> <%= movies1['start_year'] %> </td>

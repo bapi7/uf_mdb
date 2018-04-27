@@ -78,7 +78,7 @@
       </div>
     </div>
 
-    <%= form_tag({controller: "sidebar_list"}, id: 'sform', method: "get") do %>
+    <%= form_tag({controller: "sidebar_list", action: "celebrity_prime_comp"}, id: 'sform', method: "get") do %>
       <p>Number Of Movies Acted :<%= text_field_tag(:nom) %></p>
       <p>Avg. Movie Rating of Actor :<%= text_field_tag(:ave) %></p>
       <p>Sort By : <%= select_tag :sort_by, options_for_select(["ASC", "DESC"], "DESC") %> </p>

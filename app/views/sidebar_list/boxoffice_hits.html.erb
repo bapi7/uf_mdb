@@ -78,7 +78,7 @@
         </div>
       </div>
 
-      <%= form_tag({controller: "sidebar_list"}, id:'sform', method: "get") do %>
+      <%= form_tag({controller: "sidebar_list", action: "boxoffice_hits"}, id:'sform', method: "get") do %>
         <!-- <p>Year :<%= text_field_tag(:year) %></p> -->
         <!-- <p>Rating : <%= text_field_tag(:rating) %></p> -->
         <p> Sort By : <%= select_tag :sort_by, options_for_select([ "ASC", "DESC" ], "DESC") %> </p>
