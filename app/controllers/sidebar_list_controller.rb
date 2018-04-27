@@ -168,8 +168,8 @@ group by m.START_YEAR order by m.START_YEAR " + sort_by.to_s
     when r.rating >= 7 and r.rating <8 then '7-8'
     when r.rating >= 8 and r.rating <9 then '8-9'
     when r.rating >= 9 and r.rating <10 then '9-10'
-    end as rating_range as label, count(*) as value
-from (select rating from movies m, ratings r Where m.movie_id = r.movie_id and r.rating >= " + rating.to_s + " and m.start_year = " + year.to_s + " order by r.rating " + sort_by.to_s+") r
+    end as label, count(*) as value
+from (select rating from movies m, ratings r Where m.movie_id = r.movie_id and r.rating >= " + rating.to_s + " and m.start_year = " + year.to_s + " order by r.rating " + sort_by.to_s+" ) r
     group by case
              when r.rating >= 0 and r.rating <1 then '0-1'
              when r.rating >= 1 and r.rating <2 then '1-2'
@@ -182,7 +182,7 @@ from (select rating from movies m, ratings r Where m.movie_id = r.movie_id and r
              when r.rating >= 8 and r.rating <9 then '8-9'
              when r.rating >= 9 and r.rating <10 then '9-10'
              end
-    order by rating_range"
+    order by label"
     @year_count = ActiveRecord::Base.connection.exec_query(sql).to_a
     mov = []
     @year_count.each do |yc|
