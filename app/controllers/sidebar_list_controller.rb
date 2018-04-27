@@ -664,7 +664,7 @@ where rownum <=10
                                                 :chart => {
                                                     :caption => 'Movie runtime stats',
                                                     :subCaption => 'UFMDb',
-                                                    :xAxisname => 'Runtime range',
+                                                    :xAxisname => 'Language',
                                                     :yAxisName => 'Movie Count',
                                                     :theme => 'ocean'
                                                 },

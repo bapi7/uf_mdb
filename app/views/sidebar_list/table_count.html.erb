@@ -36,7 +36,8 @@
               <a href="/sidebar_list/celebrity_prime_comp?nom=Richard+Attenborough">Prime comparison for Celebrity</a>
             </li>
             <li><a href="/sidebar_list/pop_production_critic?rating=6&sort_by=DESC">Popular Production Houses </a></li>
-            <li><a href="/sidebar_list/pop_production_votes?rating=8&votes=10000&sort_by=DESC">Top Production Houses</a></li>
+            <li><a href="/sidebar_list/pop_production_votes?rating=8&votes=10000&sort_by=DESC">Top Production Houses</a>
+            </li>
             <li><a href="#">Movie Queries</a></li>
             <li><a href="/sidebar_list/movie_table">MPAA Ratings</a></li>
             <li><a href="/sidebar_list/runtime">Runtime</a></li>
@@ -77,41 +78,44 @@
             </li>
           </ul>
         </div> <!-- top bar -->
-        <div class="container">
-        <div class="title-bar centre-text">
+
+        <div class="title-bar">
           <div class="left">
             <h2>Table Count</h2>
           </div>
         </div>
 
-          <%= form_tag({controller: "sidebar_list", action: "table_count"}, id:'sform',class:'centre-text', method: "post") do %>
-                        
-          <% end %>
-
         <div id="chart-container"> <% if !@piechart.nil? %><%= @piechart.render() %><% end %></div>
 
-        <table class="table table-bordered" >
+        <table class="table table-striped" >
             <thead>
               <tr>
                 <th>Table</th>
                 <th>No of Rows</th>
-                
+
               </tr>
             </thead>
             <tbody>
             <% if !@movie.nil? %>
               <% @movie.each do |movies1| %>
               	<tr>
-                 
+
                   <td> <%= movies1['table_name'] %> </td>
               		<td> <%= movies1['counter'] %> </td>
-              		
+
                 </tr>
               <%end %>
             <% end %>
+            <tr bgcolor="#deb887">
+
+              <td> Total </td>
+              <td> 245805 </td>
+
+            </tr>
+
             </tbody>
           </table>
-        <%= submit_tag("245805") %>
+
 
 
 
