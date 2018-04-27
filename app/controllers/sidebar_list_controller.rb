@@ -306,8 +306,7 @@ where k.celebrity_id = l.celebrity_id and l.NoOfmovies > "+nom+" and avg_rating 
  def celebrity_prime_comp
 
     nom = params[:nom]
-    ave = params[:ave]
-    sort_by = params[:sort_by]
+    
     sql = " select t1.celebrity_name
 from
 (select k.celebrity_id,celebrity_name, l.noofmovies,k.hits,l.birth_year, l.DEATH_YEAR, (l.birth_year+20) as start_year1, (l.birth_year+50) as end_year1
@@ -323,8 +322,8 @@ where m.movie_id = p.movie_id and m.movie_id = r.movie_id and p.CELEBRITY_ID = c
 group by c.celebrity_name,c.CELEBRITY_ID, c.birth_year, c.DEATH_YEAR) l
 where k.celebrity_id = l.celebrity_id) t1
 where t1.start_year1 >= (select (birth_year+20)
-from celebrities where celebrities.CELEBRITY_NAME='Richard Attenborough') and t1.end_year1 <= (select (birth_year+50) 
-from celebrities where celebrities.CELEBRITY_NAME='Richard Attenborough')"
+from celebrities where celebrities.CELEBRITY_NAME= '"+ nom+"') and t1.end_year1 <= (select (birth_year+50) 
+from celebrities where celebrities.CELEBRITY_NAME= '"+ nom+"') and t1.celebrity_name != '"+ nom+"' "
     @movi = ActiveRecord::Base.connection.exec_query(sql).to_a
 
     @movie = @movi.paginate(:page=> params[:page], :per_page=>15)
@@ -540,7 +539,7 @@ order by age  " + sort_by.to_s
     @movie = @movi.paginate(:page=> params[:page], :per_page=>15)
   end
 
-  def table_cnt
+  def table_count
 
 
       sql = "select  table_name, 
