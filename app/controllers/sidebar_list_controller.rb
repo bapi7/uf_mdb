@@ -153,7 +153,7 @@ group by m.START_YEAR order by m.START_YEAR " + sort_by.to_s
     rating = params[:rating]
     sort_by = params[:sort_by]
 
-    sql = "Select poster, primary_title, start_year, rating From movies m, ratings r Where m.movie_id = r.movie_id and r.rating >= " + rating.to_s + " and m.start_year = " + year.to_s + " order by r.rating " + sort_by.to_s
+    sql = "Select m.movie_id, poster, primary_title, start_year, rating From movies m, ratings r Where m.movie_id = r.movie_id and r.rating >= " + rating.to_s + " and m.start_year = " + year.to_s + " order by r.rating " + sort_by.to_s
     @marr = ActiveRecord::Base.connection.exec_query(sql).to_a
     @movie = @marr.paginate(:page=> params[:page], :per_page=>15)
 
@@ -168,7 +168,7 @@ group by m.START_YEAR order by m.START_YEAR " + sort_by.to_s
     when r.rating >= 7 and r.rating <8 then '7-8'
     when r.rating >= 8 and r.rating <9 then '8-9'
     when r.rating >= 9 and r.rating <10 then '9-10'
-    end as rating_range, count(*) as val
+    end as rating_range as label, count(*) as value
 from (select rating from movies m, ratings r Where m.movie_id = r.movie_id and r.rating >= " + rating.to_s + " and m.start_year = " + year.to_s + " order by r.rating " + sort_by.to_s+") r
     group by case
              when r.rating >= 0 and r.rating <1 then '0-1'

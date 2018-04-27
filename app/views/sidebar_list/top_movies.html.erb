@@ -104,7 +104,7 @@
                   <td>
                     <img src=<%= movies1['poster'] %> alt="" style="width:128px;height:128px;">
                   </td>
-                  <td> <%= movies1['primary_title'] %> </td>
+                  <td> <a href="/movies/<%= movies1['movie_id'] %>"><p class="title"><%= movies1['primary_title'] %></p></a> </td>
               		<td> <%= movies1['start_year'] %> </td>
               		<td> <%= movies1['rating'] %> </td>
                 </tr>
