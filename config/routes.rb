@@ -13,6 +13,8 @@ Rails.application.routes.draw do
    get 'sidebar_list/actor_age_hits'
    get 'sidebar_list/table_count'
 
+   get 'sidebar_list/movie_table'
+
   get 'sidebar_list/celeb_hits'
   resources :reviews
   resources :users

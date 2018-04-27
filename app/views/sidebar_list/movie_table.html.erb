@@ -36,9 +36,15 @@
             <li><a href="/sidebar_list/pop_production_critic?rating=6&sort_by=DESC">Popular Production Houses </a></li>
             <li><a href="/sidebar_list/pop_production_votes?rating=8&votes=10000&sort_by=DESC">Top Production Houses</a></li>
             <li><a href="#">Movie Queries</a></li>
+
           </ul>
 
           <div class="separator"></div>
+           
+         
+
+
+
         </menu>
       </aside>
 
@@ -60,6 +66,18 @@
               </div>
             </li>
             <li>
+              
+              <div class="dropdown dropdown-movies" style="padding: 13px 0px;">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Login/Register
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item" href="#" style="color:black;">MPAA Ratings</a>
+                  <a class="dropdown-item" href="#" style="color:black;">Run Time</a>
+                </div>
+              </div>
+
+
               <div class="dropdown" style="padding: 13px 0px;">
                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   Login/Register
@@ -79,41 +97,13 @@
           </div>
         </div>
 
-          <%= form_tag({controller: "sidebar_list", action: "actor_age_hits"}, id:'sform',class:'centre-text', method: "get") do %>
-            <p>Year :<%= text_field_tag(:year) %></p>
-            <p>Rating : <%= text_field_tag(:rating) %></p>
-            <p> Sort By : <%= select_tag :sort_by, options_for_select([ "ASC", "DESC" ], "DESC") %> </p>
-            <%= submit_tag("Execute") %>
-          <% end %>
-        <br>
-        <div id="chart-container" class="centre-text"> <% if !@piechart.nil? %><%= @piechart.render() %><% end %></div>
-
-        <table class="table table-bordered" >
-            <thead>
-              <tr>
-                <th class="font-weight-bold">Celebrity Name</th>
-                <th class="font-weight-bold">Movie count</th>
-                <th class="font-weight-bold">BO Hits</th>
-                <th class="font-weight-bold">age</th>
-              </tr>
-            </thead>
-            <tbody>
-            <% if !@movie.nil? %>
-              <% @movie.each do |movies1| %>
-              	<tr>
-                 
-                  <td> <%= movies1['celebrity_name'] %> </td>
-              		<td> <%= movies1['noofmovies'] %> </td>
-              		<td> <%= movies1['hits'] %> </td>
-                  <td> <%= movies1['age'] %> </td>
-                </tr>
-              <%end %>
-            <% end %>
-            </tbody>
-          </table>
-
-        <%= will_paginate @movie %>
+      <div id="chart-container" class="centre-text">
+        <% if !@piechart.nil? %><%= @piechart.render() %>
+        <% end %></div>
       </div>
+
+
+
         </div> <!-- main -->
 
       </div> <!-- window -->

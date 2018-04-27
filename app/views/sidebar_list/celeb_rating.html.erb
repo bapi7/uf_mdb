@@ -10,7 +10,7 @@
 </head>
 
 <body>
-    <div class="window">
+    <div class="window" style="position: static;">
 
       <aside class="sidebar">
         <div class="top-bar">
@@ -34,7 +34,7 @@
               <a href="/sidebar_list/celebrity_prime_comp?nom=20&ave=7&sort_by=DESC">Prime comparison for Celebrity</a>
             </li>
             <li><a href="/sidebar_list/pop_production_critic?rating=6&sort_by=DESC">Popular Production Houses </a></li>
-            <li><a href="/sidebar_list/pop_production_votes?rating=6&sort_by=DESC">Top Production Houses</a></li>
+            <li><a href="/sidebar_list/pop_production_votes?rating=8&votes=10000&sort_by=DESC">Top Production Houses</a></li>
             <li><a href="#">Movie Queries</a></li>
           </ul>
 
@@ -72,30 +72,30 @@
             </li>
           </ul>
         </div> <!-- top bar -->
-
-        <div class="title-bar">
+        <div class="container">
+        <div class="title-bar centre-text">
           <div class="left">
             <h2>Top Movies</h2>
           </div>
         </div>
 
           
-<%= form_tag({controller: "sidebar_list", action: "celeb_rating"}, id: 'sform', method: "get") do %>
+<%= form_tag({controller: "sidebar_list", action: "celeb_rating"}, id: 'sform', class:'centre-text', method: "get") do %>
         <p>Rating : <%= text_field_tag(:rating) %></p>
         <p> Sort By : <%= select_tag :sort_by, options_for_select(["ASC", "DESC"], "DESC") %> </p>
         <p><%= submit_tag("Execute") %></p>
       <% end %>
-
-      <div id="chart-container">
+      <br>
+      <div id="chart-container" class="centre-text">
         <% if !@piechart.nil? %><%= @piechart.render() %>
         <% end %></div>
 
-      <table class="table table-striped">
+      <table class="table table-bordered">
         <thead>
         <tr>
-          <th>Celebrity Name</th>
-          <th>Movie Count</th>
-          <th>Rating</th>
+          <th class="font-weight-bold">Celebrity Name</th>
+          <th class="font-weight-bold">Movie Count</th>
+          <th class="font-weight-bold">Rating</th>
         </tr>
         </thead>
         <tbody>
@@ -105,7 +105,7 @@
     
               <td> <%= movies1['celebrity_name'] %> </td>
               <td> <%= movies1['movie_count'] %> </td>
-              <td> <%= movies1['celeb_rating'] %> </td>
+              <td> <%= '%.2f' % movies1['celeb_rating'] %> </td>
             </tr>
           <% end %>
         <% end %>
@@ -113,7 +113,7 @@
         </tbody>
       </table>
         <%= will_paginate @movie %>
-
+      </div>
 
 
 

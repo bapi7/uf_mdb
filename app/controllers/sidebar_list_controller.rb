@@ -443,8 +443,8 @@ order by count(*) " + sort_by.to_s
     sql ="select b.production, sum(r.VOTES) as sum_votes
       from
       movies m, boxoffice b, ratings r
-      where m.movie_id = b.movie_id and m.movie_id = r.movie_id and r.rating > "+rating +" and r.VOTES >="+ votes+"
-      group by b.production"
+      where m.movie_id = b.movie_id and m.movie_id = r.movie_id and r.rating > "+rating +" and r.VOTES >= "+ votes+"
+      group by b.production "
 
     @movi = ActiveRecord::Base.connection.exec_query(sql).to_a
 
@@ -554,5 +554,44 @@ order by age  " + sort_by.to_s
    
     render :table_count
   end
+
+  def movie_table
+      sql = "select mpaa_rating as label, count(*) as value 
+from movies
+group by mpaa_rating "
+      @year_count = ActiveRecord::Base.connection.exec_query(sql).to_a
+      mov = []
+      @year_count.each do |yc|
+        yc["label"] = yc["label"].to_s
+        yc["value"] = yc["value"].to_s
+        mov << yc
+      end
+
+    @piechart = Fusioncharts::Chart.new({
+                                            :height => 500,
+                                            :width => 600,
+                                            :id => 'chart',
+                                            :type => 'pie3d',
+                                            :renderAt => 'chart-container',
+                                            :dataSource => {
+                                                :chart => {
+                                                    :caption => 'Movie spread by MPAA Rating',
+                                                    :subCaption => 'UFMDb',
+                                                    :startingAngle => "120",
+                                                    :showLabels => "0",
+                                                    :showLegend => "1",
+                                                    :enableMultiSlicing => "0",
+                                                    :slicingDistance => "15",
+                                                    :showPercentValues => "1",
+                                                    :showPercentInTooltip => "0",
+                                                    :plotTooltext => "MPAA Rating : $label Total Movie Count : $datavalue",
+                                                    :theme => 'ocean'
+                                                },
+                                                :data => mov
+                                            }
+                                        })
+  end
+
+  
 
 end

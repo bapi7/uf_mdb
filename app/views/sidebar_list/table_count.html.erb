@@ -10,8 +10,8 @@
 </head>
 
 <body>
-  <div class="window-margin">
-    <div class="window">
+  
+    <div class="window" style="position: static;">
 
       <aside class="sidebar">
         <div class="top-bar">
@@ -25,9 +25,17 @@
           <div class="separator"></div>
 
           <ul class="no-bullets">
-            <li><a href="/sidebar_list/template">Top Movies</a></li>
-            <li><a href="#">Box Office hits</a></li>
-            <li><a href="#">Celebrity hits</a></li>
+            <li><a href="/sidebar_list/top_movies?year=2018&rating=1&sort_by=DESC">Top Movies</a></li>
+            <li><a href="/sidebar_list/boxoffice_hits?sort_by=DESC">Box Office hits</a></li>
+            <li><a href="/sidebar_list/celeb_hits?nom=20&ave=7&sort_by=DESC">Celebrity hits</a></li>
+            <li><a href="/sidebar_list/actor_age_hits?rating=6&sort_by=DESC">Top Celebrity movies</a></li>
+            <li><a href="/sidebar_list/celeb_rating?rating=6&sort_by=DESC">Celebrity Ratings</a></li>
+            <li><a href="/sidebar_list/celeb_rating_genre?rating=6&sort_by=DESC">Celebrity Genre Ratings</a></li>
+            <li>
+              <a href="/sidebar_list/celebrity_prime_comp?nom=20&ave=7&sort_by=DESC">Prime comparison for Celebrity</a>
+            </li>
+            <li><a href="/sidebar_list/pop_production_critic?rating=6&sort_by=DESC">Popular Production Houses </a></li>
+            <li><a href="/sidebar_list/pop_production_votes?rating=8&votes=10000&sort_by=DESC">Top Production Houses</a></li>
             <li><a href="#">Movie Queries</a></li>
           </ul>
 
@@ -106,7 +114,7 @@
         </div> <!-- main -->
 
       </div> <!-- window -->
-    </div> <!-- window margin -->
+   
     <script src='//production-assets.codepen.io/assets/common/stopExecutionOnTimeout-b2a7b3fe212eaa732349046d8416e00a9dec26eb7fd347590fbced3ab38af52e.js'></script>
     <script >jQuery(document).ready(function($) {
 

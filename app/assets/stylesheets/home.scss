@@ -521,3 +521,20 @@ a:hover {
   position: absolute; /*or fixed*/
   right: 0px;
 }
+
+.window .main .top-bar .top-menu .dropdown-movies {
+  position: absolute; /*or fixed*/
+  right: 550px;
+}
+
+    .centre-text{
+      text-align: center;
+    }
+    .table > tbody > tr > td{
+      text-align: center;
+      vertical-align: middle;
+    }
+    .table > thead > tr > th{
+      text-align: center;
+      vertical-align: middle;
+    }
