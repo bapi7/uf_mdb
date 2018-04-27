@@ -221,7 +221,7 @@ from (select rating from movies m, ratings r Where m.movie_id = r.movie_id and r
     nom = params[:nom]
     ave = params[:ave]
     sort_by = params[:sort_by]
-    sql = "select celebrity_name, l.noofmovies as movie_count , k.hits, avg_rating
+    sql = "select celebrity_name, l.noofmovies as movie_count , k.hits as hits, avg_rating
 from
 (select p.celebrity_id,count(*) as hits
 from movies m, principal_cast p,
@@ -235,22 +235,33 @@ group by c.celebrity_name,c.CELEBRITY_ID) l
 where k.celebrity_id = l.celebrity_id and l.NoOfmovies > "+nom+" and avg_rating >"+ ave +" order by k.hits " + sort_by.to_s
    @movi = ActiveRecord::Base.connection.exec_query(sql).to_a
 
-    @movie = @movi.paginate(:page=> params[:page], :per_page=>15)
 
-    mov = []
-    @movie.each do |yc|
-      yc["label"] = yc["label"].to_s
-      mov << yc
+    chart_data = Array.new
+
+
+    test =[]
+    @movi.each do |data|
+      obj = {}
+      obj["label"] = data["celebrity_name"]
+      test << obj
     end
-    mov.to_json
+      test.to_json
 
-
-    mov1=[]
-    @movie.each do |yc|
-      yc["value"] = yc["value"].to_s
-      mov1 << yc
+    test1 =[]
+    @movi.each do |data|
+      obj1 ={}
+      obj1["value"] = data["movie_count"].to_s
+      test1 << obj1
     end
-    mov1.to_json
+    test1.to_json
+
+    test2 =[]
+    @movi.each do |data|
+      obj2 ={}
+      obj2["value"] = data["hits"].to_s
+      test2 << obj2
+    end
+    test2.to_json
 
     @piechart = Fusioncharts::Chart.new({
                                             :height => 400,
@@ -259,34 +270,36 @@ where k.celebrity_id = l.celebrity_id and l.NoOfmovies > "+nom+" and avg_rating 
                                             :renderAt => 'chart-container',
                                             :dataSource => {
                                                 "chart" =>  {
-                                                    "caption": "Number of Hit movies by Year",
-                                                    "xaxisname": "Year",
-                                                    "yaxisname": "Number of Hit Movies",
+                                                    "caption": "Celebrity Hits and Movie Count",
+                                                    "subcaption": "Last year",
+                                                    "xaxisname": "Movies Count",
+                                                    "yaxisname": "Celebrity Name",
                                                     "theme": "ocean"
                                                 },
                                                 "categories": [
                                                     {
-                                                        :category => mov
+                                                        :category => test
                                                     }
-
                                                 ],
                                                 "dataset": [
                                                     {
-                                                        "seriesname": "Number of Hit Movies",
+                                                        "seriesname": "Movie Count",
                                                         "renderas": "line",
                                                         "showvalues": "0",
-                                                        :data => mov1
+                                                        :data => test1
                                                     },
                                                     {
-                                                        "seriesname": "Number of Hit Movies",
+                                                        "seriesname": "Hit Movies",
                                                         "renderas": "area",
                                                         "showvalues": "0",
-                                                        :data => mov1
+                                                        :data => test2
                                                     }
 
                                                 ]
                                             }
                                         });
+
+    @movie = @movi.paginate(:page=> params[:page], :per_page=>15)
 
   end
 
